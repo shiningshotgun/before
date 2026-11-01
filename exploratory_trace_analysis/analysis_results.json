@@ -1,0 +1,2636 @@
+{
+  "targets": {
+    "fischer_target": [
+      {
+        "seed": 2896,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 1978,
+        "q_l1": 0.6016,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 120,
+        "sched_div": true,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "profile_name": "Schedule Divergence Without Return Impact",
+        "persistence": 0.3165,
+        "action_persistence": 0.1772,
+        "rejoined": false,
+        "t_rejoin": null,
+        "transient_intersections_count": 54,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 1,
+          "act_u": 2,
+          "argmax_d": 1,
+          "argmax_u": 2,
+          "vals_d": [
+            0.1327,
+            0.3595,
+            0.346,
+            0.225
+          ],
+          "vals_u": [
+            0.1327,
+            0.3595,
+            0.493,
+            0.225
+          ],
+          "details": "Greedy argmax shifted: dream=1, untrans=2"
+        }
+      },
+      {
+        "seed": 1711,
+        "q_l1": 0.3187,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 24,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "profile_name": "Behavioral Drift Without Schedule Impact (Seed-42 Pattern)",
+        "persistence": 0.0571,
+        "action_persistence": 0.0343,
+        "rejoined": true,
+        "t_rejoin": 35,
+        "transient_intersections_count": 165,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 1,
+          "act_u": 3,
+          "argmax_d": 1,
+          "argmax_u": 3,
+          "vals_d": [
+            -0.0157,
+            -0.0079,
+            -0.0087,
+            -0.0082
+          ],
+          "vals_u": [
+            -0.0142,
+            -0.0092,
+            -0.0087,
+            -0.0073
+          ],
+          "details": "Greedy argmax shifted: dream=1, untrans=3"
+        }
+      },
+      {
+        "seed": 1826,
+        "q_l1": 0.3,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 199,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "profile_name": "Behavioral Drift Without Schedule Impact (Seed-42 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": false,
+        "t_rejoin": null,
+        "transient_intersections_count": 0,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 2,
+          "act_u": 1,
+          "argmax_d": 2,
+          "argmax_u": 1,
+          "vals_d": [
+            -0.0156,
+            -0.0135,
+            -0.0122,
+            -0.0151
+          ],
+          "vals_u": [
+            -0.0156,
+            -0.0135,
+            -0.016,
+            -0.0151
+          ],
+          "details": "Greedy argmax shifted: dream=2, untrans=1"
+        }
+      },
+      {
+        "seed": 4591,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 5500,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 3052,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 3327,
+        "q_l1": 1.2078,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 28,
+        "sched_div": true,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "profile_name": "Schedule Divergence Without Return Impact",
+        "persistence": 0.1813,
+        "action_persistence": 0.152,
+        "rejoined": false,
+        "t_rejoin": null,
+        "transient_intersections_count": 140,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 2,
+          "act_u": 3,
+          "argmax_d": 2,
+          "argmax_u": 3,
+          "vals_d": [
+            -0.0154,
+            -0.0151,
+            -0.0146,
+            -0.0148
+          ],
+          "vals_u": [
+            -0.0154,
+            -0.0151,
+            -0.0146,
+            -0.0145
+          ],
+          "details": "Greedy argmax shifted: dream=2, untrans=3"
+        }
+      },
+      {
+        "seed": 8314,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 2490,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 3233,
+        "q_l1": 0.6,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 180,
+        "sched_div": true,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "profile_name": "Schedule Divergence Without Return Impact",
+        "persistence": 1.0,
+        "action_persistence": 0.4211,
+        "rejoined": false,
+        "t_rejoin": null,
+        "transient_intersections_count": 0,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 2,
+          "act_u": 1,
+          "argmax_d": 2,
+          "argmax_u": 1,
+          "vals_d": [
+            -0.2335,
+            0.3439,
+            0.3722,
+            0.1301
+          ],
+          "vals_u": [
+            -0.2335,
+            0.4909,
+            0.3722,
+            0.1301
+          ],
+          "details": "Greedy argmax shifted: dream=2, untrans=1"
+        }
+      },
+      {
+        "seed": 1022,
+        "q_l1": 0.6,
+        "q_div": true,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Latent Divergence (Q divergence only)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 1431,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 9056,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 7356,
+        "q_l1": 0.6006,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 0,
+        "sched_div": true,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "profile_name": "Schedule Divergence Without Return Impact",
+        "persistence": 0.3417,
+        "action_persistence": 0.2312,
+        "rejoined": true,
+        "t_rejoin": 115,
+        "transient_intersections_count": 131,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 3,
+          "act_u": 1,
+          "argmax_d": 3,
+          "argmax_u": 1,
+          "vals_d": [
+            -0.0028,
+            -0.3683,
+            -0.0004,
+            0.0121
+          ],
+          "vals_u": [
+            -0.0028,
+            0.8817,
+            -0.0004,
+            0.0121
+          ],
+          "details": "Greedy argmax shifted: dream=3, untrans=1"
+        }
+      },
+      {
+        "seed": 2692,
+        "q_l1": 0.654,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 34,
+        "sched_div": true,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "profile_name": "Schedule Divergence Without Return Impact",
+        "persistence": 0.1636,
+        "action_persistence": 0.1152,
+        "rejoined": false,
+        "t_rejoin": null,
+        "transient_intersections_count": 138,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 3,
+          "act_u": 1,
+          "argmax_d": 3,
+          "argmax_u": 1,
+          "vals_d": [
+            -0.0159,
+            -0.0061,
+            -0.0069,
+            0.0001
+          ],
+          "vals_u": [
+            -0.0159,
+            -0.0061,
+            -0.0076,
+            -0.0082
+          ],
+          "details": "Greedy argmax shifted: dream=3, untrans=1"
+        }
+      },
+      {
+        "seed": 9126,
+        "q_l1": 1.5122,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 46,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "profile_name": "Behavioral Drift Without Schedule Impact (Seed-42 Pattern)",
+        "persistence": 0.1046,
+        "action_persistence": 0.098,
+        "rejoined": false,
+        "t_rejoin": null,
+        "transient_intersections_count": 137,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 0,
+          "act_u": 1,
+          "argmax_d": 0,
+          "argmax_u": 1,
+          "vals_d": [
+            -0.0039,
+            -0.0103,
+            -0.0142,
+            -0.0149
+          ],
+          "vals_u": [
+            -0.0107,
+            -0.0103,
+            -0.0142,
+            -0.0149
+          ],
+          "details": "Greedy argmax shifted: dream=0, untrans=1"
+        }
+      },
+      {
+        "seed": 4054,
+        "q_l1": 0.9237,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 20,
+        "sched_div": true,
+        "ret_div": true,
+        "contrast": -1.0,
+        "profile_tuple": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "profile_name": "Complete Divergence (Q, Action, Schedule, Return)",
+        "persistence": 0.7095,
+        "action_persistence": 0.4302,
+        "rejoined": false,
+        "t_rejoin": null,
+        "transient_intersections_count": 52,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 3,
+          "act_u": 2,
+          "argmax_d": 3,
+          "argmax_u": 2,
+          "vals_d": [
+            -0.0425,
+            -0.0154,
+            -0.013,
+            -0.0114
+          ],
+          "vals_u": [
+            -0.0424,
+            -0.0154,
+            -0.0121,
+            -0.0126
+          ],
+          "details": "Greedy argmax shifted: dream=3, untrans=2"
+        }
+      },
+      {
+        "seed": 2784,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 6406,
+        "q_l1": 0.6,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 121,
+        "sched_div": true,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "profile_name": "Schedule Divergence Without Return Impact",
+        "persistence": 0.2051,
+        "action_persistence": 0.1282,
+        "rejoined": true,
+        "t_rejoin": 194,
+        "transient_intersections_count": 62,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 2,
+          "act_u": 1,
+          "argmax_d": 2,
+          "argmax_u": 1,
+          "vals_d": [
+            -0.1765,
+            0.3386,
+            0.3407,
+            0.1864
+          ],
+          "vals_u": [
+            -0.1765,
+            0.4856,
+            0.3407,
+            0.1907
+          ],
+          "details": "Greedy argmax shifted: dream=2, untrans=1"
+        }
+      },
+      {
+        "seed": 5048,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 3998,
+        "q_l1": 0.3,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 27,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "profile_name": "Behavioral Drift Without Schedule Impact (Seed-42 Pattern)",
+        "persistence": 0.0174,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 31,
+        "transient_intersections_count": 169,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 2,
+          "act_u": 1,
+          "argmax_d": 2,
+          "argmax_u": 1,
+          "vals_d": [
+            -0.0051,
+            -0.0045,
+            -0.0017,
+            -0.0095
+          ],
+          "vals_u": [
+            -0.0051,
+            -0.0045,
+            -0.0058,
+            -0.0095
+          ],
+          "details": "Greedy argmax shifted: dream=2, untrans=1"
+        }
+      },
+      {
+        "seed": 6333,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 1478,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 4915,
+        "q_l1": 1.2,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 63,
+        "sched_div": true,
+        "ret_div": true,
+        "contrast": -0.5,
+        "profile_tuple": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "profile_name": "Complete Divergence (Q, Action, Schedule, Return)",
+        "persistence": 0.6618,
+        "action_persistence": 0.3676,
+        "rejoined": true,
+        "t_rejoin": 175,
+        "transient_intersections_count": 46,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 2,
+          "act_u": 1,
+          "argmax_d": 2,
+          "argmax_u": 1,
+          "vals_d": [
+            -0.089,
+            0.2957,
+            0.3022,
+            0.1557
+          ],
+          "vals_u": [
+            -0.089,
+            0.7037,
+            0.3022,
+            0.1557
+          ],
+          "details": "Greedy argmax shifted: dream=2, untrans=1"
+        }
+      },
+      {
+        "seed": 7763,
+        "q_l1": 0.9062,
+        "q_div": true,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Latent Divergence (Q divergence only)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 5876,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      }
+    ],
+    "mal_target": [
+      {
+        "seed": 2896,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 1978,
+        "q_l1": 0.6016,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 120,
+        "sched_div": true,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "profile_name": "Schedule Divergence Without Return Impact",
+        "persistence": 0.1899,
+        "action_persistence": 0.1392,
+        "rejoined": false,
+        "t_rejoin": null,
+        "transient_intersections_count": 64,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 1,
+          "act_u": 2,
+          "argmax_d": 1,
+          "argmax_u": 2,
+          "vals_d": [
+            0.1327,
+            0.3595,
+            0.346,
+            0.225
+          ],
+          "vals_u": [
+            0.1327,
+            0.3595,
+            0.493,
+            0.225
+          ],
+          "details": "Greedy argmax shifted: dream=1, untrans=2"
+        }
+      },
+      {
+        "seed": 1711,
+        "q_l1": 0.3187,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 24,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "profile_name": "Behavioral Drift Without Schedule Impact (Seed-42 Pattern)",
+        "persistence": 0.0571,
+        "action_persistence": 0.0343,
+        "rejoined": true,
+        "t_rejoin": 35,
+        "transient_intersections_count": 165,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 1,
+          "act_u": 3,
+          "argmax_d": 1,
+          "argmax_u": 3,
+          "vals_d": [
+            -0.0157,
+            -0.0079,
+            -0.0087,
+            -0.0082
+          ],
+          "vals_u": [
+            -0.0142,
+            -0.0092,
+            -0.0087,
+            -0.0073
+          ],
+          "details": "Greedy argmax shifted: dream=1, untrans=3"
+        }
+      },
+      {
+        "seed": 1826,
+        "q_l1": 0.3,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 199,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "profile_name": "Behavioral Drift Without Schedule Impact (Seed-42 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": false,
+        "t_rejoin": null,
+        "transient_intersections_count": 0,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 2,
+          "act_u": 1,
+          "argmax_d": 2,
+          "argmax_u": 1,
+          "vals_d": [
+            -0.0155,
+            -0.0132,
+            -0.0122,
+            -0.0151
+          ],
+          "vals_u": [
+            -0.0155,
+            -0.0132,
+            -0.016,
+            -0.0151
+          ],
+          "details": "Greedy argmax shifted: dream=2, untrans=1"
+        }
+      },
+      {
+        "seed": 4591,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 5500,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 3052,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 3327,
+        "q_l1": 1.2078,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 28,
+        "sched_div": true,
+        "ret_div": true,
+        "contrast": -0.5,
+        "profile_tuple": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "profile_name": "Complete Divergence (Q, Action, Schedule, Return)",
+        "persistence": 0.538,
+        "action_persistence": 0.2865,
+        "rejoined": false,
+        "t_rejoin": null,
+        "transient_intersections_count": 79,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 2,
+          "act_u": 3,
+          "argmax_d": 2,
+          "argmax_u": 3,
+          "vals_d": [
+            -0.0154,
+            -0.0151,
+            -0.0146,
+            -0.0148
+          ],
+          "vals_u": [
+            -0.0154,
+            -0.0151,
+            -0.0146,
+            -0.0145
+          ],
+          "details": "Greedy argmax shifted: dream=2, untrans=3"
+        }
+      },
+      {
+        "seed": 8314,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 2490,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 3233,
+        "q_l1": 0.6,
+        "q_div": true,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Latent Divergence (Q divergence only)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 1022,
+        "q_l1": 0.6,
+        "q_div": true,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Latent Divergence (Q divergence only)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 1431,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 9056,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 7356,
+        "q_l1": 0.6006,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 0,
+        "sched_div": true,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "profile_name": "Schedule Divergence Without Return Impact",
+        "persistence": 0.3467,
+        "action_persistence": 0.2261,
+        "rejoined": true,
+        "t_rejoin": 115,
+        "transient_intersections_count": 130,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 3,
+          "act_u": 1,
+          "argmax_d": 3,
+          "argmax_u": 1,
+          "vals_d": [
+            -0.0028,
+            -0.3683,
+            -0.0004,
+            0.0121
+          ],
+          "vals_u": [
+            -0.0028,
+            0.8817,
+            -0.0004,
+            0.0121
+          ],
+          "details": "Greedy argmax shifted: dream=3, untrans=1"
+        }
+      },
+      {
+        "seed": 2692,
+        "q_l1": 0.654,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 34,
+        "sched_div": true,
+        "ret_div": true,
+        "contrast": 1.5,
+        "profile_tuple": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "profile_name": "Complete Divergence (Q, Action, Schedule, Return)",
+        "persistence": 0.1636,
+        "action_persistence": 0.1152,
+        "rejoined": false,
+        "t_rejoin": null,
+        "transient_intersections_count": 138,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 3,
+          "act_u": 1,
+          "argmax_d": 3,
+          "argmax_u": 1,
+          "vals_d": [
+            -0.0159,
+            -0.0061,
+            -0.0069,
+            0.0001
+          ],
+          "vals_u": [
+            -0.0159,
+            -0.0061,
+            -0.0076,
+            -0.0082
+          ],
+          "details": "Greedy argmax shifted: dream=3, untrans=1"
+        }
+      },
+      {
+        "seed": 9126,
+        "q_l1": 1.5122,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 46,
+        "sched_div": true,
+        "ret_div": true,
+        "contrast": -1.0,
+        "profile_tuple": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "profile_name": "Complete Divergence (Q, Action, Schedule, Return)",
+        "persistence": 0.3137,
+        "action_persistence": 0.2222,
+        "rejoined": false,
+        "t_rejoin": null,
+        "transient_intersections_count": 105,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 0,
+          "act_u": 1,
+          "argmax_d": 0,
+          "argmax_u": 1,
+          "vals_d": [
+            -0.0039,
+            -0.0103,
+            -0.0142,
+            -0.0149
+          ],
+          "vals_u": [
+            -0.0107,
+            -0.0103,
+            -0.0142,
+            -0.0149
+          ],
+          "details": "Greedy argmax shifted: dream=0, untrans=1"
+        }
+      },
+      {
+        "seed": 4054,
+        "q_l1": 0.9237,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 20,
+        "sched_div": true,
+        "ret_div": true,
+        "contrast": 1.0,
+        "profile_tuple": [
+          1,
+          1,
+          1,
+          1
+        ],
+        "profile_name": "Complete Divergence (Q, Action, Schedule, Return)",
+        "persistence": 0.6983,
+        "action_persistence": 0.4302,
+        "rejoined": true,
+        "t_rejoin": 197,
+        "transient_intersections_count": 54,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 3,
+          "act_u": 2,
+          "argmax_d": 3,
+          "argmax_u": 2,
+          "vals_d": [
+            -0.0425,
+            -0.0154,
+            -0.013,
+            -0.0114
+          ],
+          "vals_u": [
+            -0.0424,
+            -0.0154,
+            -0.0121,
+            -0.0126
+          ],
+          "details": "Greedy argmax shifted: dream=3, untrans=2"
+        }
+      },
+      {
+        "seed": 2784,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 6406,
+        "q_l1": 0.6,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 121,
+        "sched_div": true,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "profile_name": "Schedule Divergence Without Return Impact",
+        "persistence": 0.6795,
+        "action_persistence": 0.5641,
+        "rejoined": false,
+        "t_rejoin": null,
+        "transient_intersections_count": 25,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 2,
+          "act_u": 1,
+          "argmax_d": 2,
+          "argmax_u": 1,
+          "vals_d": [
+            -0.1766,
+            0.3386,
+            0.3407,
+            0.1864
+          ],
+          "vals_u": [
+            -0.1766,
+            0.4856,
+            0.3407,
+            0.1907
+          ],
+          "details": "Greedy argmax shifted: dream=2, untrans=1"
+        }
+      },
+      {
+        "seed": 5048,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 3998,
+        "q_l1": 0.3,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 27,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          1,
+          0,
+          0
+        ],
+        "profile_name": "Behavioral Drift Without Schedule Impact (Seed-42 Pattern)",
+        "persistence": 0.0174,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 31,
+        "transient_intersections_count": 169,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 2,
+          "act_u": 1,
+          "argmax_d": 2,
+          "argmax_u": 1,
+          "vals_d": [
+            -0.0051,
+            -0.0045,
+            -0.0017,
+            -0.0095
+          ],
+          "vals_u": [
+            -0.0051,
+            -0.0045,
+            -0.0058,
+            -0.0095
+          ],
+          "details": "Greedy argmax shifted: dream=2, untrans=1"
+        }
+      },
+      {
+        "seed": 6333,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 1478,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 4915,
+        "q_l1": 1.2,
+        "q_div": true,
+        "act_div": true,
+        "t_div": 78,
+        "sched_div": true,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          1,
+          1,
+          0
+        ],
+        "profile_name": "Schedule Divergence Without Return Impact",
+        "persistence": 0.2727,
+        "action_persistence": 0.157,
+        "rejoined": true,
+        "t_rejoin": 112,
+        "transient_intersections_count": 88,
+        "matched_decision": {
+          "category": "greedy_value_shift",
+          "act_d": 0,
+          "act_u": 2,
+          "argmax_d": 0,
+          "argmax_u": 2,
+          "vals_d": [
+            -0.0119,
+            -0.0154,
+            -0.012,
+            -0.0148
+          ],
+          "vals_u": [
+            -0.0164,
+            -0.0154,
+            -0.012,
+            -0.0148
+          ],
+          "details": "Greedy argmax shifted: dream=0, untrans=2"
+        }
+      },
+      {
+        "seed": 7763,
+        "q_l1": 0.9062,
+        "q_div": true,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          1,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Latent Divergence (Q divergence only)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      },
+      {
+        "seed": 5876,
+        "q_l1": 0.0,
+        "q_div": false,
+        "act_div": false,
+        "t_div": null,
+        "sched_div": false,
+        "ret_div": false,
+        "contrast": 0.0,
+        "profile_tuple": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "profile_name": "Exact Null (Seed-77 Pattern)",
+        "persistence": 0.0,
+        "action_persistence": 0.0,
+        "rejoined": true,
+        "t_rejoin": 0,
+        "transient_intersections_count": 0,
+        "matched_decision": null
+      }
+    ]
+  },
+  "case_studies": {
+    "3233": {
+      "seed": 3233,
+      "suspended_pos": [
+        3,
+        0
+      ],
+      "suspended_collected": [],
+      "realized_dream": {
+        "0": 1.0,
+        "1": -1.0,
+        "2": 0.5,
+        "3": 0.5
+      },
+      "live_regime": {
+        "0": -1.0,
+        "1": 1.0,
+        "2": 0.5,
+        "3": -0.5
+      },
+      "mal_swapped_pair": [
+        0,
+        1
+      ],
+      "mal_swap_diff": 2.0,
+      "targets": {
+        "fischer_target": {
+          "q_l1": 0.6,
+          "t_div": 180,
+          "sched_d": [
+            [
+              0,
+              [
+                1
+              ]
+            ],
+            [
+              4,
+              [
+                2
+              ]
+            ],
+            [
+              60,
+              [
+                1
+              ]
+            ],
+            [
+              67,
+              [
+                2
+              ]
+            ],
+            [
+              124,
+              [
+                1
+              ]
+            ],
+            [
+              131,
+              [
+                2
+              ]
+            ],
+            [
+              137,
+              [
+                0
+              ]
+            ],
+            [
+              185,
+              [
+                1
+              ]
+            ],
+            [
+              193,
+              [
+                2
+              ]
+            ]
+          ],
+          "sched_u": [
+            [
+              0,
+              [
+                1
+              ]
+            ],
+            [
+              4,
+              [
+                2
+              ]
+            ],
+            [
+              60,
+              [
+                1
+              ]
+            ],
+            [
+              67,
+              [
+                2
+              ]
+            ],
+            [
+              124,
+              [
+                1
+              ]
+            ],
+            [
+              131,
+              [
+                2
+              ]
+            ],
+            [
+              137,
+              [
+                0
+              ]
+            ],
+            [
+              180,
+              [
+                1
+              ]
+            ],
+            [
+              186,
+              [
+                2
+              ]
+            ]
+          ],
+          "ret_d": -3.0,
+          "ret_u": -3.0,
+          "contrast": 0.0,
+          "matched": {
+            "category": "greedy_value_shift",
+            "act_d": 2,
+            "act_u": 1,
+            "argmax_d": 2,
+            "argmax_u": 1,
+            "vals_d": [
+              -0.2335,
+              0.3439,
+              0.3722,
+              0.1301
+            ],
+            "vals_u": [
+              -0.2335,
+              0.4909,
+              0.3722,
+              0.1301
+            ],
+            "details": "Greedy argmax shifted: dream=2, untrans=1"
+          },
+          "persistence": 1.0,
+          "rejoined": false,
+          "t_rejoin": null
+        },
+        "mal_target": {
+          "q_l1": 0.6,
+          "t_div": null,
+          "sched_d": [
+            [
+              0,
+              [
+                1
+              ]
+            ],
+            [
+              4,
+              [
+                2
+              ]
+            ],
+            [
+              60,
+              [
+                1
+              ]
+            ],
+            [
+              67,
+              [
+                2
+              ]
+            ],
+            [
+              124,
+              [
+                1
+              ]
+            ],
+            [
+              131,
+              [
+                2
+              ]
+            ],
+            [
+              137,
+              [
+                0
+              ]
+            ],
+            [
+              180,
+              [
+                1
+              ]
+            ],
+            [
+              186,
+              [
+                2
+              ]
+            ]
+          ],
+          "sched_u": [
+            [
+              0,
+              [
+                1
+              ]
+            ],
+            [
+              4,
+              [
+                2
+              ]
+            ],
+            [
+              60,
+              [
+                1
+              ]
+            ],
+            [
+              67,
+              [
+                2
+              ]
+            ],
+            [
+              124,
+              [
+                1
+              ]
+            ],
+            [
+              131,
+              [
+                2
+              ]
+            ],
+            [
+              137,
+              [
+                0
+              ]
+            ],
+            [
+              180,
+              [
+                1
+              ]
+            ],
+            [
+              186,
+              [
+                2
+              ]
+            ]
+          ],
+          "ret_d": 3.0,
+          "ret_u": 3.0,
+          "contrast": 0.0,
+          "matched": null,
+          "persistence": 0.0,
+          "rejoined": true,
+          "t_rejoin": 0
+        }
+      }
+    },
+    "9126": {
+      "seed": 9126,
+      "suspended_pos": [
+        3,
+        1
+      ],
+      "suspended_collected": [],
+      "realized_dream": {
+        "0": 1.0,
+        "1": -1.0,
+        "2": 0.5,
+        "3": 0.5
+      },
+      "live_regime": {
+        "0": -1.0,
+        "1": 1.0,
+        "2": 0.5,
+        "3": -0.5
+      },
+      "mal_swapped_pair": [
+        0,
+        1
+      ],
+      "mal_swap_diff": 2.0,
+      "targets": {
+        "fischer_target": {
+          "q_l1": 1.5122,
+          "t_div": 46,
+          "sched_d": [
+            [
+              1,
+              [
+                1
+              ]
+            ],
+            [
+              6,
+              [
+                2
+              ]
+            ],
+            [
+              60,
+              [
+                3
+              ]
+            ],
+            [
+              64,
+              [
+                1
+              ]
+            ],
+            [
+              72,
+              [
+                2
+              ]
+            ],
+            [
+              77,
+              [
+                0
+              ]
+            ],
+            [
+              120,
+              [
+                1
+              ]
+            ],
+            [
+              124,
+              [
+                2
+              ]
+            ],
+            [
+              180,
+              [
+                1
+              ]
+            ],
+            [
+              184,
+              [
+                2
+              ]
+            ]
+          ],
+          "sched_u": [
+            [
+              1,
+              [
+                1
+              ]
+            ],
+            [
+              6,
+              [
+                2
+              ]
+            ],
+            [
+              60,
+              [
+                3
+              ]
+            ],
+            [
+              64,
+              [
+                1
+              ]
+            ],
+            [
+              72,
+              [
+                2
+              ]
+            ],
+            [
+              77,
+              [
+                0
+              ]
+            ],
+            [
+              120,
+              [
+                1
+              ]
+            ],
+            [
+              124,
+              [
+                2
+              ]
+            ],
+            [
+              180,
+              [
+                1
+              ]
+            ],
+            [
+              184,
+              [
+                2
+              ]
+            ]
+          ],
+          "ret_d": -2.5,
+          "ret_u": -2.5,
+          "contrast": 0.0,
+          "matched": {
+            "category": "greedy_value_shift",
+            "act_d": 0,
+            "act_u": 1,
+            "argmax_d": 0,
+            "argmax_u": 1,
+            "vals_d": [
+              -0.0039,
+              -0.0103,
+              -0.0142,
+              -0.0149
+            ],
+            "vals_u": [
+              -0.0107,
+              -0.0103,
+              -0.0142,
+              -0.0149
+            ],
+            "details": "Greedy argmax shifted: dream=0, untrans=1"
+          },
+          "persistence": 0.1046,
+          "rejoined": false,
+          "t_rejoin": null
+        },
+        "mal_target": {
+          "q_l1": 1.5122,
+          "t_div": 46,
+          "sched_d": [
+            [
+              1,
+              [
+                1
+              ]
+            ],
+            [
+              6,
+              [
+                2
+              ]
+            ],
+            [
+              60,
+              [
+                3
+              ]
+            ],
+            [
+              64,
+              [
+                1
+              ]
+            ],
+            [
+              94,
+              [
+                2
+              ]
+            ],
+            [
+              98,
+              [
+                0
+              ]
+            ],
+            [
+              120,
+              [
+                1
+              ]
+            ],
+            [
+              124,
+              [
+                2
+              ]
+            ],
+            [
+              180,
+              [
+                1
+              ]
+            ],
+            [
+              184,
+              [
+                2
+              ]
+            ]
+          ],
+          "sched_u": [
+            [
+              1,
+              [
+                1
+              ]
+            ],
+            [
+              6,
+              [
+                2
+              ]
+            ],
+            [
+              60,
+              [
+                3
+              ]
+            ],
+            [
+              64,
+              [
+                1
+              ]
+            ],
+            [
+              101,
+              [
+                2
+              ]
+            ],
+            [
+              120,
+              [
+                1
+              ]
+            ],
+            [
+              124,
+              [
+                2
+              ]
+            ],
+            [
+              180,
+              [
+                1
+              ]
+            ],
+            [
+              184,
+              [
+                2
+              ]
+            ]
+          ],
+          "ret_d": 3.5,
+          "ret_u": 4.5,
+          "contrast": -1.0,
+          "matched": {
+            "category": "greedy_value_shift",
+            "act_d": 0,
+            "act_u": 1,
+            "argmax_d": 0,
+            "argmax_u": 1,
+            "vals_d": [
+              -0.0039,
+              -0.0103,
+              -0.0142,
+              -0.0149
+            ],
+            "vals_u": [
+              -0.0107,
+              -0.0103,
+              -0.0142,
+              -0.0149
+            ],
+            "details": "Greedy argmax shifted: dream=0, untrans=1"
+          },
+          "persistence": 0.3137,
+          "rejoined": false,
+          "t_rejoin": null
+        }
+      }
+    }
+  },
+  "dream_q_divergence": [
+    {
+      "seed": 2896,
+      "target": "fischer_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 2896,
+      "target": "mal_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 1978,
+      "target": "fischer_target",
+      "first_q_div_step": 1,
+      "final_l1": 0.6016
+    },
+    {
+      "seed": 1978,
+      "target": "mal_target",
+      "first_q_div_step": 1,
+      "final_l1": 0.6016
+    },
+    {
+      "seed": 1711,
+      "target": "fischer_target",
+      "first_q_div_step": 28,
+      "final_l1": 0.3187
+    },
+    {
+      "seed": 1711,
+      "target": "mal_target",
+      "first_q_div_step": 28,
+      "final_l1": 0.3187
+    },
+    {
+      "seed": 1826,
+      "target": "fischer_target",
+      "first_q_div_step": 11,
+      "final_l1": 0.3
+    },
+    {
+      "seed": 1826,
+      "target": "mal_target",
+      "first_q_div_step": 11,
+      "final_l1": 0.3
+    },
+    {
+      "seed": 4591,
+      "target": "fischer_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 4591,
+      "target": "mal_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 5500,
+      "target": "fischer_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 5500,
+      "target": "mal_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 3052,
+      "target": "fischer_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 3052,
+      "target": "mal_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 3327,
+      "target": "fischer_target",
+      "first_q_div_step": 8,
+      "final_l1": 1.2078
+    },
+    {
+      "seed": 3327,
+      "target": "mal_target",
+      "first_q_div_step": 8,
+      "final_l1": 1.2078
+    },
+    {
+      "seed": 8314,
+      "target": "fischer_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 8314,
+      "target": "mal_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 2490,
+      "target": "fischer_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 2490,
+      "target": "mal_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 3233,
+      "target": "fischer_target",
+      "first_q_div_step": 1,
+      "final_l1": 0.6
+    },
+    {
+      "seed": 3233,
+      "target": "mal_target",
+      "first_q_div_step": 1,
+      "final_l1": 0.6
+    },
+    {
+      "seed": 1022,
+      "target": "fischer_target",
+      "first_q_div_step": 2,
+      "final_l1": 0.6
+    },
+    {
+      "seed": 1022,
+      "target": "mal_target",
+      "first_q_div_step": 2,
+      "final_l1": 0.6
+    },
+    {
+      "seed": 1431,
+      "target": "fischer_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 1431,
+      "target": "mal_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 9056,
+      "target": "fischer_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 9056,
+      "target": "mal_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 7356,
+      "target": "fischer_target",
+      "first_q_div_step": 1,
+      "final_l1": 0.6006
+    },
+    {
+      "seed": 7356,
+      "target": "mal_target",
+      "first_q_div_step": 1,
+      "final_l1": 0.6006
+    },
+    {
+      "seed": 2692,
+      "target": "fischer_target",
+      "first_q_div_step": 5,
+      "final_l1": 0.654
+    },
+    {
+      "seed": 2692,
+      "target": "mal_target",
+      "first_q_div_step": 5,
+      "final_l1": 0.654
+    },
+    {
+      "seed": 9126,
+      "target": "fischer_target",
+      "first_q_div_step": 7,
+      "final_l1": 1.5122
+    },
+    {
+      "seed": 9126,
+      "target": "mal_target",
+      "first_q_div_step": 7,
+      "final_l1": 1.5122
+    },
+    {
+      "seed": 4054,
+      "target": "fischer_target",
+      "first_q_div_step": 3,
+      "final_l1": 0.9237
+    },
+    {
+      "seed": 4054,
+      "target": "mal_target",
+      "first_q_div_step": 3,
+      "final_l1": 0.9237
+    },
+    {
+      "seed": 2784,
+      "target": "fischer_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 2784,
+      "target": "mal_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 6406,
+      "target": "fischer_target",
+      "first_q_div_step": 1,
+      "final_l1": 0.6
+    },
+    {
+      "seed": 6406,
+      "target": "mal_target",
+      "first_q_div_step": 1,
+      "final_l1": 0.6
+    },
+    {
+      "seed": 5048,
+      "target": "fischer_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 5048,
+      "target": "mal_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 3998,
+      "target": "fischer_target",
+      "first_q_div_step": 33,
+      "final_l1": 0.3
+    },
+    {
+      "seed": 3998,
+      "target": "mal_target",
+      "first_q_div_step": 33,
+      "final_l1": 0.3
+    },
+    {
+      "seed": 6333,
+      "target": "fischer_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 6333,
+      "target": "mal_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 1478,
+      "target": "fischer_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 1478,
+      "target": "mal_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 4915,
+      "target": "fischer_target",
+      "first_q_div_step": 5,
+      "final_l1": 1.2
+    },
+    {
+      "seed": 4915,
+      "target": "mal_target",
+      "first_q_div_step": 5,
+      "final_l1": 1.2
+    },
+    {
+      "seed": 7763,
+      "target": "fischer_target",
+      "first_q_div_step": 3,
+      "final_l1": 0.9062
+    },
+    {
+      "seed": 7763,
+      "target": "mal_target",
+      "first_q_div_step": 3,
+      "final_l1": 0.9062
+    },
+    {
+      "seed": 5876,
+      "target": "fischer_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    },
+    {
+      "seed": 5876,
+      "target": "mal_target",
+      "first_q_div_step": null,
+      "final_l1": 0.0
+    }
+  ]
+}
