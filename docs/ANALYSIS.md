@@ -1,6 +1,6 @@
-# Remnant Decision-Trace & Return Composition Analysis
+# before Decision-Trace & Return Composition Analysis
 
-This document details the decision-trace investigation conducted on the Remnant prototype to determine whether counterfactual dream transformations alter internal agent mechanics (actions, Q-learning updates, per-action memory lookups, and policy blending) when terminal cumulative return contrasts are near zero.
+This document details the decision-trace investigation conducted on the before prototype to determine whether counterfactual dream transformations alter internal agent mechanics (actions, Q-learning updates, per-action memory lookups, and policy blending) when terminal cumulative return contrasts are near zero.
 
 ---
 
@@ -15,8 +15,8 @@ Investigating internal agent decisions during execution risks altering the execu
 
 ### Passive Observer Solution
 The architecture implements strictly passive listener callbacks:
-1. `remnant/memory.py` attaches an optional `trace_listener(state, action, value, pool_indices)` invoked only inside existing `value()` calls.
-2. `remnant/agent.py` attaches `decision_listener` and `learn_listener`. On exploratory steps (`is_random=True`), the listener receives `None` for candidate values without calling `memory.value()`.
+1. `before/memory.py` attaches an optional `trace_listener(state, action, value, pool_indices)` invoked only inside existing `value()` calls.
+2. `before/agent.py` attaches `decision_listener` and `learn_listener`. On exploratory steps (`is_random=True`), the listener receives `None` for candidate values without calling `memory.value()`.
 3. Calls to `getstate()` and `append()` are read-only/append-only and consume zero RNG draws.
 
 ### The Equivalence Gate (`tests/test_equivalence_gate.py`)

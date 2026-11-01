@@ -1,15 +1,21 @@
-# Remnant
+# before
 
 > An exploratory tabular reinforcement learning prototype studying whether transformed versus faithful dream content changes how an agent later adapts to silent environment shifts.
 
-[![Tests](https://github.com/shiningshotgun/remnant/actions/workflows/tests.yml/badge.svg)](https://github.com/shiningshotgun/remnant/actions/workflows/tests.yml)
+[![Tests](https://github.com/shiningshotgun/before/actions/workflows/tests.yml/badge.svg)](https://github.com/shiningshotgun/before/actions/workflows/tests.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+---
+
+## Project Identity Note
+
+This repository contains **before**, the preserved predecessor prototype formerly called *Remnant*. The separate, new time-loop research project owns the name **Remnant**. Historical run records, provenance snapshots, and baseline execution directory paths retain earlier naming where byte-preservation is required, but the active codebase, package, and remote repository are named **before**.
 
 ---
 
 ## About
 
-**Remnant** investigates an agent's behavioral adaptation under silent shifts in environmental meaning. 
+**before** investigates an agent's behavioral adaptation under silent shifts in environmental meaning. 
 
 In a discrete $5 \times 5$ gridworld, an agent learns to act via tabular Q-learning with non-parametric episodic memory. During its lifetime, the meanings (reward values) of objects silently shift across regimes, and the agent constructs a learned transition and reward world model from its experience. Mid-episode at step $t=5$, the agent is suspended, injected into an episode simulated entirely within its own learned world model ("dream phase") under transformed meanings, and subsequently returned to the simulator under a prespecified target regime.
 
@@ -54,8 +60,8 @@ The core project library has **zero external dependencies** and uses the Python 
 ### Installation
 
 ```bash
-git clone https://github.com/shiningshotgun/remnant.git
-cd remnant
+git clone https://github.com/shiningshotgun/before.git
+cd before
 
 python3 -m venv .venv
 source .venv/bin/activate
@@ -108,8 +114,8 @@ python run_stage4.py
 ## Project Structure
 
 ```
-remnant/
-├── remnant/                 # Core library (standard library only)
+before/
+├── before/                  # Core library (standard library only)
 │   ├── world.py             # 5x5 gridworld environment & layout
 │   ├── memory.py            # Episodic memory buffer & similarity lookup
 │   ├── model.py             # Empirical world model (transitions & rewards)

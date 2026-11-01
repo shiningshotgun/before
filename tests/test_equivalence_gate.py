@@ -7,9 +7,9 @@ Proves that:
 import copy, json, random, sys
 from pathlib import Path
 sys.path.insert(0, '.')
-from remnant.world import default_world
-from remnant.agent import QAgent
-from remnant.memory import EpisodicMemory
+from before.world import default_world
+from before.agent import QAgent
+from before.memory import EpisodicMemory
 from run_stage4 import run_seed
 
 def test_passive_logging_deterministic_equivalence():

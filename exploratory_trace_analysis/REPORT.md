@@ -199,7 +199,7 @@ Among the 14 seeds exhibiting post-dream Q divergence ($L_1 > 0$):
 ### Baseline-Gate Manifest & File Verification
 At the opening of the exploratory session, the following checks were performed against the closed pilot artifacts:
 1. **Prespecification Hash:** `prespec_repeated_draws.md` was verified with SHA-256 `cd7c6d9f6350c83c81c045b75dfe6a3f38bf719cf2fa2c00c30971d219b4f902`, matching `manifest.json`.
-2. **Git Commit HEAD:** The manifest recorded `git_head: null` (written prior to `git rev-parse` capture). The local repo HEAD was verified as `4c8ad1a3d7abe88112de24b64625879dd2da6e44`.
+2. **Git Commit HEAD:** `repeated_draws/manifest.json` recorded `git_head: "4c8ad1a3d7abe88112de24b64625879dd2da6e44"`, matching the repository baseline commit. (An earlier draft reported `git_head: null` due to a lookup script querying `head_commit` instead of `git_head`; the committed manifest file itself was always populated with the valid SHA).
 3. **Trace Schemas:** All 35 completed seeds passed `validate_schema` (27 VALID, 8 EXCLUDED).
 4. **Byte Accounting:** Manifest recorded `cumulative_bytes = 418850896`. Summing the 35 `seed_*.json` files yielded 418,850,271 bytes, and `manifest.json` itself accounted for the remaining 625 bytes, matching the driver's directory-glob byte summation.
 5. **Test Baseline:** The existing root test suite passed all 16 tests in 82.12s before exploratory modifications began.

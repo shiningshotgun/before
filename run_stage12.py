@@ -13,10 +13,10 @@ Pass criteria justification (prespecified):
 import json, random, resource, sys, time
 from pathlib import Path
 sys.path.insert(0, '.')
-from remnant.world import default_world
-from remnant.agent import QAgent
-from remnant.memory import EpisodicMemory
-from remnant.model import WorldModel
+from before.world import default_world
+from before.agent import QAgent
+from before.memory import EpisodicMemory
+from before.model import WorldModel
 
 CONFIG = {
     'seed': 7,

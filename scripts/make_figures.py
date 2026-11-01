@@ -1,4 +1,4 @@
-"""Generate publication-ready figures from Remnant recorded run artifacts.
+"""Generate publication-ready figures from before recorded run artifacts.
 Reads only checkpoints/stage4_runs_v3.json and checkpoints/stage4_runs_v4.json.
 Outputs PNGs to docs/images/:
 - returns_by_arm.png

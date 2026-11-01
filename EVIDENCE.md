@@ -128,7 +128,7 @@ Results recorded cleanly in `checkpoints/stage4_runs_v3.json` (`stage4_runs.json
 
 ### Passive Logging Architecture & Equivalence Gate
 To investigate whether dream transformation changes internal mechanics (actions, Q-learning updates, per-action lookups, blend contributions, memory sampling) despite terminal return contrasts being near zero:
-1. **Passive Observers:** Instrumented callbacks inside `remnant/memory.py` (`trace_listener`) and `remnant/agent.py` (`decision_listener`, `learn_listener`).
+1. **Passive Observers:** Instrumented callbacks inside `before/memory.py` (`trace_listener`) and `before/agent.py` (`decision_listener`, `learn_listener`).
 2. **Strict Non-Interference:** On exploratory random actions (`rng.random() < self.eps`), the policy does not evaluate action values or call `memory.value()`. Instrumentation records `is_random=True` and `None` for values without invoking `memory.value()`, preventing desynchronization of `memory._rng`.
 3. **Equivalence Gate Passed (`tests/test_equivalence_gate.py`):** Verified 100% full-state deterministic equivalence between logging-on and logging-off on seed 42 (identical live/dream/return action sequences, final Q-tables, episodic memory contents, memory RNG state, and all stream final RNG states). In addition, summary returns and coverage across all seeds in v4 match the recorded v3 baseline numbers as a separately verified check.
 4. **Trace Artifact:** Full step-by-step traces recorded to `checkpoints/stage4_runs_v4.json` across all 5 prespecified seeds (`[13, 23, 42, 77, 99]`).

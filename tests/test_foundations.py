@@ -1,11 +1,11 @@
 import sys, random, os
 from pathlib import Path
 sys.path.insert(0, '.')
-from remnant.world import default_world
-from remnant.agent import QAgent
-from remnant.memory import EpisodicMemory
-from remnant.model import WorldModel
-from remnant.transform import transform, learned_transform
+from before.world import default_world
+from before.agent import QAgent
+from before.memory import EpisodicMemory
+from before.model import WorldModel
+from before.transform import transform, learned_transform
 from run_stage4 import LearnedDreamEnv, construct_mal_meanings
 import run_stage12
 

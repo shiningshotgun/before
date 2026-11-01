@@ -1,4 +1,4 @@
-# Core testing and visualization dependencies for Remnant
+# Core testing and visualization dependencies for before
 # Note: The project's core agent, world model, memory, and environment code
 # are written in standard Python only and require zero external dependencies.
 

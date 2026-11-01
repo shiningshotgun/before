@@ -1,4 +1,4 @@
-"""Return-phase reward composition analysis for Remnant stage4_runs_v4.json.
+"""Return-phase reward composition analysis for before stage4_runs_v4.json.
 
 Read-only arithmetic over the recorded decision-trace artifact. No RNG, no
 simulation, no training. Object identity of each collection comes from the

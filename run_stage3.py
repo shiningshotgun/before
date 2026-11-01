@@ -10,7 +10,7 @@ Gate exits nonzero on failure.
 import json, random, sys
 from pathlib import Path
 sys.path.insert(0, '.')
-from remnant.model import WorldModel
+from before.model import WorldModel
 from run_stage12 import load_checkpoint, CKPT
 
 SEED = 11

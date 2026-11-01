@@ -105,7 +105,7 @@ class QAgent:
     @classmethod
     def from_dict(cls, data):
         """Reconstruct QAgent from plain json-serializable dict."""
-        from remnant.memory import EpisodicMemory
+        from before.memory import EpisodicMemory
         mem = EpisodicMemory(
             temperature=data.get('memory_temperature', 0.1),
             lookup_sample=data.get('memory_lookup_sample', 400)

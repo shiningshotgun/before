@@ -1,4 +1,4 @@
-"""Independent trace parser for Remnant Stage 4/pilot runs.
+"""Independent trace parser for before Stage 4/pilot runs.
 
 Provides clean, standalone parsing and metric recomputation for:
 - Post-dream Q-table divergence (L1)

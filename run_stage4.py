@@ -36,11 +36,11 @@ Preregistered Protocols & Validity Rules:
 import copy, json, random, resource, sys, time
 from pathlib import Path
 sys.path.insert(0, '.')
-from remnant.world import default_world
-from remnant.agent import QAgent
-from remnant.memory import EpisodicMemory
-from remnant.model import WorldModel
-from remnant.transform import transform, learned_transform
+from before.world import default_world
+from before.agent import QAgent
+from before.memory import EpisodicMemory
+from before.model import WorldModel
+from before.transform import transform, learned_transform
 
 CONFIG = {
     'prespecified_seeds': [13, 23, 42, 77, 99],
@@ -475,7 +475,7 @@ def run_seed(seed, log_traces=False):
 def main():
     t0 = time.time()
     results = []
-    print(f"Running Remnant Stage 4 across prespecified seeds: {CONFIG['prespecified_seeds']}")
+    print(f"Running before Stage 4 across prespecified seeds: {CONFIG['prespecified_seeds']}")
     for seed in CONFIG['prespecified_seeds']:
         res = run_seed(seed, log_traces=True)
         results.append(res)
