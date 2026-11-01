@@ -41,3 +41,7 @@ def test_pipeline_integrity():
     cs_9126 = res["case_studies"]["9126"]
     assert cs_9126["targets"]["fischer_target"]["sched_d"] == cs_9126["targets"]["fischer_target"]["sched_u"]
     assert cs_9126["targets"]["mal_target"]["sched_d"] != cs_9126["targets"]["mal_target"]["sched_u"]
+
+def test_generated_tables_match_report():
+    from exploratory_trace_analysis.generate_report_tables import verify_tables_in_report
+    verify_tables_in_report()

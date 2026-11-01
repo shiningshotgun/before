@@ -37,6 +37,7 @@ def test_anchor_reproduction():
         div_steps = []
         sched_diffs = []
         contrasts = []
+        contrasts_by_seed = {}
         archetypes = {"null": 0, "pattern": 0, "divergent": 0}
         
         for s, d in valid_traces:
@@ -67,6 +68,7 @@ def test_anchor_reproduction():
             ret_u = extract_return_reward(arm_u)
             c = round(ret_d - ret_u, 3)
             contrasts.append(c)
+            contrasts_by_seed[s] = c
             
             # Archetypes
             if sched_d != sched_u:
@@ -85,7 +87,8 @@ def test_anchor_reproduction():
             "sched_diff_count": len(sched_diffs),
             "sched_diff_seeds": sched_diffs,
             "archetypes": archetypes,
-            "contrasts": contrasts
+            "contrasts": contrasts,
+            "contrasts_by_seed": contrasts_by_seed
         }
         
     f_res = results["fischer_target"]
@@ -127,3 +130,22 @@ def test_anchor_reproduction():
     assert 3233 in f_res["sched_diff_seeds"] and 3233 not in m_res["sched_diff_seeds"]
     # Seed 9126 changes schedule for Mal only
     assert 9126 in m_res["sched_diff_seeds"] and 9126 not in f_res["sched_diff_seeds"]
+
+    # 7. Return contrast distribution assertions
+    # Fischer: 25 zero, 0 positive, 2 negative (4054 = -1.0, 4915 = -0.5)
+    f_c = f_res["contrasts"]
+    assert sum(1 for c in f_c if c == 0.0) == 25, f"Fischer zero contrasts count {sum(1 for c in f_c if c == 0.0)} != 25"
+    assert sum(1 for c in f_c if c > 0.0) == 0, f"Fischer positive contrasts count {sum(1 for c in f_c if c > 0.0)} != 0"
+    assert sum(1 for c in f_c if c < 0.0) == 2, f"Fischer negative contrasts count {sum(1 for c in f_c if c < 0.0)} != 2"
+    assert f_res["contrasts_by_seed"][4054] == -1.0, f"Fischer seed 4054 contrast {f_res['contrasts_by_seed'][4054]} != -1.0"
+    assert f_res["contrasts_by_seed"][4915] == -0.5, f"Fischer seed 4915 contrast {f_res['contrasts_by_seed'][4915]} != -0.5"
+
+    # Mal: 23 zero, 2 positive (2692 = +1.5, 4054 = +1.0), 2 negative (3327 = -0.5, 9126 = -1.0)
+    m_c = m_res["contrasts"]
+    assert sum(1 for c in m_c if c == 0.0) == 23, f"Mal zero contrasts count {sum(1 for c in m_c if c == 0.0)} != 23"
+    assert sum(1 for c in m_c if c > 0.0) == 2, f"Mal positive contrasts count {sum(1 for c in m_c if c > 0.0)} != 2"
+    assert sum(1 for c in m_c if c < 0.0) == 2, f"Mal negative contrasts count {sum(1 for c in m_c if c < 0.0)} != 2"
+    assert m_res["contrasts_by_seed"][2692] == 1.5, f"Mal seed 2692 contrast {m_res['contrasts_by_seed'][2692]} != +1.5"
+    assert m_res["contrasts_by_seed"][4054] == 1.0, f"Mal seed 4054 contrast {m_res['contrasts_by_seed'][4054]} != +1.0"
+    assert m_res["contrasts_by_seed"][3327] == -0.5, f"Mal seed 3327 contrast {m_res['contrasts_by_seed'][3327]} != -0.5"
+    assert m_res["contrasts_by_seed"][9126] == -1.0, f"Mal seed 9126 contrast {m_res['contrasts_by_seed'][9126]} != -1.0"

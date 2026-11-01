@@ -8,7 +8,7 @@ This report presents a bounded, post-hoc exploratory analysis of the 27 valid pa
 - **Scope & Constraints:** No new seeds, runs, replays, or model evaluations were performed. All analyses operate strictly via independent parsing and recomputation of the existing raw trace JSON files in `repeated_draws/`.
 - **Primary Questions Addressed:**
   1. *Propagation Hierarchy:* Where does the dream transformation's effect appear, and where does it attenuate across Q-values, action choices, collection schedules, and terminal returns?
-  2. *Persistence & Rejoining:* Do divergent return trajectories remain permanently separate, or do they cross and absorb/rejoin?
+  2. *Persistence & Rejoining:* Do divergent return trajectories remain separate through the end of the trace, or do they cross and absorb/rejoin?
   3. *Matched-State Decisions:* At the exact step of first action divergence, what does the logged decision state reveal?
   4. *Target Asymmetries:* Why did Seed 3233 diverge in schedule only under Fischer, and Seed 9126 only under Mal?
   5. *Dream-Phase Q Evolution:* Can the Q trajectory across the 60 dream updates be reconstructed, and when does divergence emerge?
@@ -30,10 +30,10 @@ representing:
 | Profile 4-Tuple | Classification Name | Fischer Target ($k / 27$) | Mal Target ($k / 27$) | Shared Seeds |
 | :---: | :--- | :---: | :---: | :---: |
 | **(0, 0, 0, 0)** | **Exact Null (Seed-77 Pattern)** | 13 (48.1%) | 13 (48.1%) | 2896, 4591, 5500, 3052, 8314, 2490, 1431, 9056, 2784, 5048, 6333, 1478, 5876 |
-| **(1, 0, 0, 0)** | **Latent Q Divergence** (Q differs, 0 action diff) | 2 (7.4%) | 3 (11.1%) | 1022, 7763 *(Mal also includes 3233)* |
+| **(1, 0, 0, 0)** | **Latent Q Divergence (Q differs, 0 action diff)** | 2 (7.4%) | 3 (11.1%) | 1022, 7763 *(Mal also includes 3233)* |
 | **(1, 1, 0, 0)** | **Behavioral Drift Without Schedule Difference** | 4 (14.8%) | 3 (11.1%) | 1711, 1826, 3998 *(Fischer also includes 9126)* |
 | **(1, 1, 1, 0)** | **Schedule Divergence Without Return Contrast** | 6 (22.2%) | 4 (14.8%) | 1978, 7356, 6406 *(Fischer: +3327, +3233, +2692; Mal: +4915)* |
-| **(1, 1, 1, 1)** | **Complete Divergence** (Q, Act, Sched, Return) | 2 (7.4%) | 4 (14.8%) | 4054 *(Fischer: +4915; Mal: +3327, +2692, +9126)* |
+| **(1, 1, 1, 1)** | **Complete Divergence (Q, Act, Sched, Return)** | 2 (7.4%) | 4 (14.8%) | 4054 *(Fischer: +4915; Mal: +3327, +2692, +9126)* |
 | **Non-Nested** | Any irregular combination (e.g. (1,1,0,1) or (0,1,*,*)) | **0 (0.0%)** | **0 (0.0%)** | None |
 
 ### Key Classification Findings
@@ -60,67 +60,78 @@ For every seed where action divergence occurred ($k = 12$ in Fischer, $k = 11$ i
     - No ties were detected among maximal values.
   - **Outcome:** **100% (23 / 23) of action divergences were classified as `greedy_value_shift`.**
 
+### Descriptive Component Observation
+Inspection of the logged component fields at $t_{\text{div}}$ reveals:
+- The raw-Q argmax **never differs** between arms at $t_{\text{div}}$ (**0 of 23 instances**).
+- In **7 of 23 instances** (Seed 1826 in both targets, Seed 9126 in both targets, Seed 3998 in both targets, and Seed 4915 in Mal), the logged raw-Q values at that state are identical across arms at logged precision.
+- *Epistemic note:* This is a descriptive observation of logged quantities only. No causal attribution is made to the episodic memory term; the memory blend function has not been audited.
+
 > **Observational Limitation:** Per-step pseudo-random generator state is not recorded step-by-step in the trace format. While the boolean `is_random == False` flag confirms that the $\epsilon$-greedy branch was not taken, internal RNG streams cannot be independently reconstructed per-step.
 
 ---
 
 ## 4. Trajectory Persistence, Transient Intersections, & Absorbing Rejoining
 
-Among the action-divergent runs, trajectories do not simply branch and remain permanently apart.
+Among the action-divergent runs, trajectories do not simply branch and remain permanently apart through the remainder of the episode.
 
 ### Summary Metrics
 
-- **State Persistence ($P_{\text{state}}$):** Fraction of post-divergence steps ($t > t_{\text{div}}$) spent in different grid coordinates:
-  - Fischer Target (12 divergent runs): Mean = **0.315** (Min = 0.00, Max = 1.00)
-  - Mal Target (11 divergent runs): Mean = **0.327** (Min = 0.00, Max = 0.70)
+- **State Persistence ($P_{\text{state}}$):** Fraction of post-divergence steps ($t > t_{\text{div}}$) spent in different states.
+  *Uniform Aggregation Rule:* Includes all action-divergent runs ($N=12$ in Fischer, $N=11$ in Mal), treating seed 1826 ($t_{\text{div}}=199$, leaving zero post-divergence steps remaining in the 200-step horizon) as having $P_{\text{state}} = 0.0000$ identically for both targets:
+  - Fischer Target (12 divergent runs): Mean = **0.3132** (Min = 0.0000, Max = 1.0000)
+  - Mal Target (11 divergent runs): Mean = **0.2979** (Min = 0.0000, Max = 0.6983)
+  *(If seed 1826 is excluded due to an empty post-divergence horizon, the means across non-empty horizons are 0.3417 over 11 Fischer runs and 0.3277 over 10 Mal runs; the previous draft inadvertently reported the 10-run Mal mean alongside the 12-run Fischer mean)*.
 - **Transient State Intersections:**
-  - In 11 of 12 Fischer runs and 11 of 11 Mal runs, paired agents crossed or occupied the exact same grid state at subsequent steps ($t > t_{\text{div}}$) after their initial divergence.
-  - Across runs with transient intersections, agents shared coordinates on an average of **101.4 steps** (Fischer) and **98.8 steps** (Mal) out of the remaining horizon.
+  The analysis records full-state matches (both grid position and collected object set identical), not merely grid coordinates.
+  - Runs with at least one post-divergence state intersection: **10 of 12** in Fischer (seeds 1826 and 3233 have none) and **10 of 11** in Mal (seed 1826 has none).
+  - Total shared post-divergence steps across all runs: **1094 steps** (Fischer) and **1017 steps** (Mal).
+  - Means over intersecting runs ($N=10$): Mean = **109.4 steps** (Fischer) and **101.7 steps** (Mal).
+  *(Across all divergent runs including zero-intersection runs, the means are 91.2 steps over 12 Fischer runs and 92.5 steps over 11 Mal runs)*.
 - **Absorbing Rejoining:**
-  - An absorbing rejoin is defined as the existence of a step $t_{\text{rejoin}}$ such that for all $t \ge t_{\text{rejoin}}$, both state and action match permanently.
-  - **Fischer Target:** 5 of 12 action-divergent runs absorbed/rejoined permanently:
-    - Seed `1711`: diverged at $t=24$, absorbed at $t=35$ (165 post-rejoin matching steps).
-    - Seed `3998`: diverged at $t=27$, absorbed at $t=31$ (169 post-rejoin matching steps).
-    - Seed `7356`: diverged at $t=0$, absorbed at $t=115$ (85 post-rejoin matching steps).
-    - Seed `4915`: diverged at $t=63$, absorbed at $t=175$ (25 post-rejoin matching steps).
-    - Seed `6406`: diverged at $t=121$, absorbed at $t=194$ (6 post-rejoin matching steps).
-  - **Mal Target:** 5 of 11 action-divergent runs absorbed/rejoined permanently:
+  An absorbing rejoin is defined as the existence of a step $t_{\text{rejoin}}$ such that for all $t \in [t_{\text{rejoin}}, 199]$, both state and action match through the end of the logged return trace.
+  - **Fischer Target:** 5 of 12 action-divergent runs absorbed/rejoined through step 199:
+    - Seed `1711`: diverged at $t=24$, absorbed at $t=35$ (165 matching steps through step 199).
+    - Seed `3998`: diverged at $t=27$, absorbed at $t=31$ (169 matching steps through step 199).
+    - Seed `7356`: diverged at $t=0$, absorbed at $t=115$ (85 matching steps through step 199).
+    - Seed `4915`: diverged at $t=63$, absorbed at $t=175$ (25 matching steps through step 199).
+    - Seed `6406`: diverged at $t=121$, absorbed at $t=194$ (horizon edge: 6 matching steps through step 199).
+  - **Mal Target:** 5 of 11 action-divergent runs absorbed/rejoined through step 199:
     - Seed `1711`: diverged at $t=24$, absorbed at $t=35$.
     - Seed `3998`: diverged at $t=27$, absorbed at $t=31$.
     - Seed `4915`: diverged at $t=78$, absorbed at $t=112$.
     - Seed `7356`: diverged at $t=0$, absorbed at $t=115$.
-    - Seed `4054`: diverged at $t=20$, absorbed at $t=197$.
+    - Seed `4054`: diverged at $t=20$, absorbed at $t=197$ (horizon edge: 3 matching steps through step 199).
 
 ### Full Per-Seed Divergence & Rejoining Table
 
 | Seed | Target | Post-Dream $Q$ $L_1$ | $t_{\text{div}}$ | Matched State Decision | State Persistence ($P_{\text{state}}$) | Rejoined? | $t_{\text{rejoin}}$ | Shared Post-Div Steps | Profile Tuple |
 | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| 1978 | Fischer | 0.6000 | 120 | greedy_value_shift | 0.3165 | False | None | 54 | (1, 1, 1, 0) |
-| 1978 | Mal | 0.6000 | 120 | greedy_value_shift | 0.1899 | False | None | 64 | (1, 1, 1, 0) |
-| 1711 | Fischer | 0.3000 | 24 | greedy_value_shift | 0.0571 | **True** | **35** | 165 | (1, 1, 0, 0) |
-| 1711 | Mal | 0.3000 | 24 | greedy_value_shift | 0.0571 | **True** | **35** | 165 | (1, 1, 0, 0) |
+| 1978 | Fischer | 0.6016 | 120 | greedy_value_shift | 0.3165 | False | None | 54 | (1, 1, 1, 0) |
+| 1978 | Mal | 0.6016 | 120 | greedy_value_shift | 0.1899 | False | None | 64 | (1, 1, 1, 0) |
+| 1711 | Fischer | 0.3187 | 24 | greedy_value_shift | 0.0571 | **True** | **35** | 165 | (1, 1, 0, 0) |
+| 1711 | Mal | 0.3187 | 24 | greedy_value_shift | 0.0571 | **True** | **35** | 165 | (1, 1, 0, 0) |
 | 1826 | Fischer | 0.3000 | 199 | greedy_value_shift | 0.0000 | False | None | 0 | (1, 1, 0, 0) |
 | 1826 | Mal | 0.3000 | 199 | greedy_value_shift | 0.0000 | False | None | 0 | (1, 1, 0, 0) |
-| 3327 | Fischer | 1.2000 | 28 | greedy_value_shift | 0.1813 | False | None | 140 | (1, 1, 1, 0) |
-| 3327 | Mal | 1.2000 | 28 | greedy_value_shift | 0.5380 | False | None | 79 | (1, 1, 1, 1) |
+| 3327 | Fischer | 1.2078 | 28 | greedy_value_shift | 0.1813 | False | None | 140 | (1, 1, 1, 0) |
+| 3327 | Mal | 1.2078 | 28 | greedy_value_shift | 0.5380 | False | None | 79 | (1, 1, 1, 1) |
 | 3233 | Fischer | 0.6000 | 180 | greedy_value_shift | 1.0000 | False | None | 0 | (1, 1, 1, 0) |
 | 3233 | Mal | 0.6000 | None | N/A (No div) | 0.0000 | True | 0 | 200 | (1, 0, 0, 0) |
 | 1022 | Both | 0.6000 | None | N/A (No div) | 0.0000 | True | 0 | 200 | (1, 0, 0, 0) |
-| 7356 | Fischer | 0.6000 | 0 | greedy_value_shift | 0.3417 | **True** | **115** | 131 | (1, 1, 1, 0) |
-| 7356 | Mal | 0.6000 | 0 | greedy_value_shift | 0.3467 | **True** | **115** | 130 | (1, 1, 1, 0) |
-| 2692 | Fischer | 0.6000 | 34 | greedy_value_shift | 0.1636 | False | None | 138 | (1, 1, 1, 0) |
-| 2692 | Mal | 0.6000 | 34 | greedy_value_shift | 0.1636 | False | None | 138 | (1, 1, 1, 1) |
+| 7356 | Fischer | 0.6006 | 0 | greedy_value_shift | 0.3417 | **True** | **115** | 131 | (1, 1, 1, 0) |
+| 7356 | Mal | 0.6006 | 0 | greedy_value_shift | 0.3467 | **True** | **115** | 130 | (1, 1, 1, 0) |
+| 2692 | Fischer | 0.6540 | 34 | greedy_value_shift | 0.1636 | False | None | 138 | (1, 1, 1, 0) |
+| 2692 | Mal | 0.6540 | 34 | greedy_value_shift | 0.1636 | False | None | 138 | (1, 1, 1, 1) |
 | 9126 | Fischer | 1.5122 | 46 | greedy_value_shift | 0.1046 | False | None | 137 | (1, 1, 0, 0) |
 | 9126 | Mal | 1.5122 | 46 | greedy_value_shift | 0.3137 | False | None | 105 | (1, 1, 1, 1) |
-| 4054 | Fischer | 0.6000 | 20 | greedy_value_shift | 0.7095 | False | None | 52 | (1, 1, 1, 1) |
-| 4054 | Mal | 0.6000 | 20 | greedy_value_shift | 0.6983 | **True** | **197** | 54 | (1, 1, 1, 1) |
+| 4054 | Fischer | 0.9237 | 20 | greedy_value_shift | 0.7095 | False | None | 52 | (1, 1, 1, 1) |
+| 4054 | Mal | 0.9237 | 20 | greedy_value_shift | 0.6983 | **True** | **197** | 54 | (1, 1, 1, 1) |
 | 6406 | Fischer | 0.6000 | 121 | greedy_value_shift | 0.2051 | **True** | **194** | 62 | (1, 1, 1, 0) |
 | 6406 | Mal | 0.6000 | 121 | greedy_value_shift | 0.6795 | False | None | 25 | (1, 1, 1, 0) |
 | 3998 | Fischer | 0.3000 | 27 | greedy_value_shift | 0.0174 | **True** | **31** | 169 | (1, 1, 0, 0) |
 | 3998 | Mal | 0.3000 | 27 | greedy_value_shift | 0.0174 | **True** | **31** | 169 | (1, 1, 0, 0) |
 | 4915 | Fischer | 1.2000 | 63 | greedy_value_shift | 0.6618 | **True** | **175** | 46 | (1, 1, 1, 1) |
 | 4915 | Mal | 1.2000 | 78 | greedy_value_shift | 0.2727 | **True** | **112** | 88 | (1, 1, 1, 0) |
-| 7763 | Both | 0.3000 | None | N/A (No div) | 0.0000 | True | 0 | 200 | (1, 0, 0, 0) |
+| 7763 | Both | 0.9062 | None | N/A (No div) | 0.0000 | True | 0 | 200 | (1, 0, 0, 0) |
 | *13 Nulls* | Both | 0.0000 | None | N/A (No div) | 0.0000 | True | 0 | 200 | (0, 0, 0, 0) |
 
 ---
@@ -168,9 +179,9 @@ Stage 1 confirmed that the raw trace files preserve `q_table_before_dream` ($Q_0
 ### Divergence Onset Metrics
 Among the 14 seeds exhibiting post-dream Q divergence ($L_1 > 0$):
 - Q-table divergence first manifests early in the dream phase:
-  - Range of first divergent update: **Step 1 to Step 33** (median step 5).
-  - In 10 of 14 seeds, Q divergence appears within the first 8 dream updates.
-- Total final Q $L_1$ distances are exact multiples of the agent learning rate ($\alpha = 0.3$), ranging from 0.3000 to 1.5122.
+  - Range of first divergent update: **Step 1 to Step 33**, with **median step 4.0**.
+  - **11 of 14 seeds** exhibit onset at or before update 8 (and **10 of 14** strictly before update 8).
+- Total final Q $L_1$ distances range from 0.3000 to 1.5122. Because TD error updates incorporate discount factor $\gamma = 0.95$ and non-zero next-state values, compounding over successive updates yields values (e.g., 0.3187, 0.6006, 0.6016, 0.6540, 0.9062, 0.9237, 1.2078) that are not simple integer multiples of the learning rate ($\alpha = 0.3$).
 
 ---
 
@@ -180,3 +191,40 @@ Among the 14 seeds exhibiting post-dream Q divergence ($L_1 > 0$):
 2. **Small Subgroup Sizes:** Subgroup counts are small ($N_{\text{valid}} = 27$; 8 schedule-difference seeds per target; 12 Fischer and 11 Mal action-divergent seeds). Statistical generalizations across architectures or environments are unwarranted.
 3. **Absence of Per-Step RNG Trajectories:** The execution environment logs initial seeds and final RNG states, but not per-step RNG internal bits. Matched-state classifications rely on logged policy inputs and `is_random` flags.
 4. **Preserved Pilot Status:** The primary results and Wilson intervals of the closed repeated draws pilot remain unchanged.
+
+---
+
+## 8. Disclosures
+
+### Baseline-Gate Manifest & File Verification
+At the opening of the exploratory session, the following checks were performed against the closed pilot artifacts:
+1. **Prespecification Hash:** `prespec_repeated_draws.md` was verified with SHA-256 `cd7c6d9f6350c83c81c045b75dfe6a3f38bf719cf2fa2c00c30971d219b4f902`, matching `manifest.json`.
+2. **Git Commit HEAD:** The manifest recorded `git_head: null` (written prior to `git rev-parse` capture). The local repo HEAD was verified as `4c8ad1a3d7abe88112de24b64625879dd2da6e44`.
+3. **Trace Schemas:** All 35 completed seeds passed `validate_schema` (27 VALID, 8 EXCLUDED).
+4. **Byte Accounting:** Manifest recorded `cumulative_bytes = 418850896`. Summing the 35 `seed_*.json` files yielded 418,850,271 bytes, and `manifest.json` itself accounted for the remaining 625 bytes, matching the driver's directory-glob byte summation.
+5. **Test Baseline:** The existing root test suite passed all 16 tests in 82.12s before exploratory modifications began.
+
+### Synthetic Fixture Development History
+- `synthetic_fixtures.py` was committed at Stage 1 (`b882580`).
+- During Stage 2 test execution, `test_fixture_divergent_persistent` uncovered two builder defects:
+  1. An omitted collection transition across step 49/50 (step 49 had `col=[1]` and `next_col=[1]` rather than `col=[]` and `next_col=[1]`), preventing `extract_collection_schedule` from detecting the collection event.
+  2. Overlapping coordinates at $t > 20$ (`[2, (t % 8) + 1]` vs `[(t % 8) + 1, 2]`), which periodically coincided at $(2, 2)$ before collection, reducing persistence below 1.0.
+- Both builder defects were repaired in Stage 2 (`7ccdae7`) by assigning disjoint rows (`row 2` vs `row 5`) and properly specifying the transition step. The expected outcomes for all fixtures remained unchanged. Anchor reproduction tests ran against the raw traces after this repair.
+
+### Exploratory Session Commit Hashes
+The 4 local commits comprising the exploratory trace analysis session:
+1. **`b8825803e99b0c567c57f745af3db5d4a37faf79`** — *stage 1: add exploratory trace analysis plan and synthetic fixture specs*
+   - `exploratory_trace_analysis/PLAN.md`
+   - `exploratory_trace_analysis/synthetic_fixtures.py`
+2. **`7ccdae70cbd0806dd502dd1faa26fef237a4433b`** — *stage 2: independent trace parser, synthetic fixtures tests, and anchor reproduction*
+   - `exploratory_trace_analysis/__init__.py`
+   - `exploratory_trace_analysis/synthetic_fixtures.py`
+   - `exploratory_trace_analysis/test_anchor_reproduction.py`
+   - `exploratory_trace_analysis/test_parser.py`
+   - `exploratory_trace_analysis/trace_parser.py`
+3. **`e248f55f097d2bf766de01f964ce1cb4b069eaa1`** — *stage 3: propagation, rejoining, and matched-state analysis pipeline*
+   - `exploratory_trace_analysis/analysis_results.json`
+   - `exploratory_trace_analysis/run_analysis.py`
+   - `exploratory_trace_analysis/test_pipeline.py`
+4. **`8b2bb45d88d5475db08bf39a8ca7579e24fe1164`** — *stage 4: comprehensive results report for exploratory trace analysis*
+   - `exploratory_trace_analysis/REPORT.md`
