@@ -76,6 +76,7 @@ Among the action-divergent runs, trajectories do not simply branch and remain pe
 
 ### Summary Metrics
 
+<!-- START_GENERATED_SUMMARY_METRICS -->
 - **State Persistence ($P_{\text{state}}$):** Fraction of post-divergence steps ($t > t_{\text{div}}$) spent in different states.
   *Uniform Aggregation Rule:* Includes all action-divergent runs ($N=12$ in Fischer, $N=11$ in Mal), treating seed 1826 ($t_{\text{div}}=199$, leaving zero post-divergence steps remaining in the 200-step horizon) as having $P_{\text{state}} = 0.0000$ identically for both targets:
   - Fischer Target (12 divergent runs): Mean = **0.3132** (Min = 0.0000, Max = 1.0000)
@@ -101,6 +102,7 @@ Among the action-divergent runs, trajectories do not simply branch and remain pe
     - Seed `4915`: diverged at $t=78$, absorbed at $t=112$.
     - Seed `7356`: diverged at $t=0$, absorbed at $t=115$.
     - Seed `4054`: diverged at $t=20$, absorbed at $t=197$ (horizon edge: 3 matching steps through step 199).
+<!-- END_GENERATED_SUMMARY_METRICS -->
 
 ### Full Per-Seed Divergence & Rejoining Table
 
@@ -179,11 +181,13 @@ Stage 1 confirmed that the raw trace files preserve `q_table_before_dream` ($Q_0
   - **Zero discrepancies were observed across all 108 arms** (maximum error $< 10^{-6}$).
 
 ### Divergence Onset Metrics
+<!-- START_GENERATED_DIVERGENCE_ONSET -->
 Among the 14 seeds exhibiting post-dream Q divergence ($L_1 > 0$):
 - Q-table divergence first manifests early in the dream phase:
   - Range of first divergent update: **Step 1 to Step 33**, with **median step 4.0**.
   - **11 of 14 seeds** exhibit onset at or before update 8 (and **10 of 14** strictly before update 8).
 - Total final Q $L_1$ distances range from 0.3000 to 1.5122. Because TD error updates incorporate discount factor $\gamma = 0.95$ and non-zero next-state values, compounding over successive updates yields values (e.g., 0.3187, 0.6006, 0.6016, 0.6540, 0.9062, 0.9237, 1.2078) that are not simple integer multiples of the learning rate ($\alpha = 0.3$).
+<!-- END_GENERATED_DIVERGENCE_ONSET -->
 
 ---
 

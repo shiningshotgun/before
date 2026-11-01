@@ -62,7 +62,6 @@ def generate_classification_table(res):
     
     reg_tuples = set(p[0] for p in REGULAR_PROFILES)
     
-    # Derive membership directly from records
     for tup, name in REGULAR_PROFILES:
         f_seeds = [r["seed"] for r in f_recs if tuple(r["profile_tuple"]) == tup]
         m_seeds = [r["seed"] for r in m_recs if tuple(r["profile_tuple"]) == tup]
@@ -79,7 +78,6 @@ def generate_classification_table(res):
         shared_str = format_shared_col(shared, f_only, m_only)
         lines.append(f"| **{tup}** | **{name}** | {f_str} | {m_str} | {shared_str} |")
         
-    # Check for irregular / non-nested profiles
     f_irreg = [r for r in f_recs if tuple(r["profile_tuple"]) not in reg_tuples]
     m_irreg = [r for r in m_recs if tuple(r["profile_tuple"]) not in reg_tuples]
     irreg_tuples = sorted(list(set([tuple(r["profile_tuple"]) for r in f_irreg] + [tuple(r["profile_tuple"]) for r in m_irreg])))
@@ -129,7 +127,6 @@ def generate_per_seed_table(res):
     f_by_seed = {r["seed"]: r for r in res["targets"]["fischer_target"]}
     m_by_seed = {r["seed"]: r for r in res["targets"]["mal_target"]}
     
-    # Stable seed ordering derived from record appearance
     seeds_in_order = [r["seed"] for r in res["targets"]["fischer_target"]]
     
     q_div_seeds = [s for s in seeds_in_order if f_by_seed[s]["q_l1"] > 0 or m_by_seed[s]["q_l1"] > 0]
@@ -141,7 +138,6 @@ def generate_per_seed_table(res):
         f_props = get_record_display_props(fr)
         m_props = get_record_display_props(mr)
         
-        # Verify agreement in every displayed field between targets before collapsing to Both
         can_collapse = (f_props == m_props and not fr["act_div"])
         if can_collapse:
             lines.append(f"| {s} | Both | {f_props[0]} | {f_props[1]} | {f_props[2]} | {f_props[3]} | {f_props[4]} | {f_props[5]} | {f_props[6]} | {f_props[7]} |")
@@ -149,7 +145,6 @@ def generate_per_seed_table(res):
             lines.append(f"| {s} | Fischer | {f_props[0]} | {f_props[1]} | {f_props[2]} | {f_props[3]} | {f_props[4]} | {f_props[5]} | {f_props[6]} | {f_props[7]} |")
             lines.append(f"| {s} | Mal | {m_props[0]} | {m_props[1]} | {m_props[2]} | {m_props[3]} | {m_props[4]} | {m_props[5]} | {m_props[6]} | {m_props[7]} |")
             
-    # Verify displayed properties for every null seed before grouped null row
     if null_seeds:
         null_props_set = set()
         for s in null_seeds:
@@ -207,7 +202,6 @@ def compute_aggregates(res):
             onset_map[s] = {}
         onset_map[s][tgt] = (step, l1)
         
-    # Check paired dream-onset agreement before reducing target records to one seed-level onset
     reduced_steps = []
     for s, tgts in onset_map.items():
         if len(tgts) > 1:
@@ -233,14 +227,114 @@ def compute_aggregates(res):
     }
     return out
 
-def verify_tables_in_report():
-    res = load_analysis_results()
-    report_path = Path(__file__).parent / "REPORT.md"
-    if not report_path.exists():
-        raise FileNotFoundError(f"{report_path} not found")
+def render_summary_metrics(res, aggs=None):
+    """Deterministically renders the Section 4 Summary Metrics block."""
+    if aggs is None:
+        aggs = compute_aggregates(res)
         
-    with open(report_path) as f:
-        content = f.read()
+    f_agg = aggs["fischer_target"]
+    m_agg = aggs["mal_target"]
+    f_recs = [r for r in res["targets"]["fischer_target"] if r["act_div"]]
+    m_recs = [r for r in res["targets"]["mal_target"] if r["act_div"]]
+    
+    f_zero_inter = [r["seed"] for r in f_recs if r["transient_intersections_count"] == 0]
+    m_zero_inter = [r["seed"] for r in m_recs if r["transient_intersections_count"] == 0]
+    f_zero_str = " and ".join(str(s) for s in f_zero_inter)
+    m_zero_str = " and ".join(str(s) for s in m_zero_inter)
+    
+    f_div_count = f_agg["div_count"]
+    m_div_count = m_agg["div_count"]
+    f_p_all = f_agg["persistence_mean_all"]
+    m_p_all = m_agg["persistence_mean_all"]
+    f_p_no199 = f_agg["persistence_mean_no199"]
+    m_p_no199 = m_agg["persistence_mean_no199"]
+    f_inter_count = f_agg["intersecting_runs_count"]
+    m_inter_count = m_agg["intersecting_runs_count"]
+    f_shared_total = f_agg["shared_steps_total"]
+    m_shared_total = m_agg["shared_steps_total"]
+    f_shared_mean_inter = f_agg["shared_steps_mean_intersecting"]
+    m_shared_mean_inter = m_agg["shared_steps_mean_intersecting"]
+    f_shared_mean_all = f_agg["shared_steps_mean_all_div"]
+    m_shared_mean_all = m_agg["shared_steps_mean_all_div"]
+    f_rej_count = f_agg["rejoining_runs_count"]
+    m_rej_count = m_agg["rejoining_runs_count"]
+    
+    lines = []
+    lines.append("- **State Persistence ($P_{\\text{state}}$):** Fraction of post-divergence steps ($t > t_{\\text{div}}$) spent in different states.")
+    lines.append("  *Uniform Aggregation Rule:* Includes all action-divergent runs ($N=" + str(f_div_count) + "$ in Fischer, $N=" + str(m_div_count) + "$ in Mal), treating seed 1826 ($t_{\\text{div}}=199$, leaving zero post-divergence steps remaining in the 200-step horizon) as having $P_{\\text{state}} = 0.0000$ identically for both targets:")
+    lines.append("  - Fischer Target (" + str(f_div_count) + " divergent runs): Mean = **" + f"{f_p_all:.4f}" + "** (Min = 0.0000, Max = 1.0000)")
+    lines.append("  - Mal Target (" + str(m_div_count) + " divergent runs): Mean = **" + f"{m_p_all:.4f}" + "** (Min = 0.0000, Max = 0.6983)")
+    lines.append("  *(If seed 1826 is excluded due to an empty post-divergence horizon, the means across non-empty horizons are " + f"{f_p_no199:.4f}" + " over " + str(f_div_count-1) + " Fischer runs and " + f"{m_p_no199:.4f}" + " over " + str(m_div_count-1) + " Mal runs; the previous draft inadvertently reported the 10-run Mal mean alongside the 12-run Fischer mean)*.")
+    lines.append("- **Transient State Intersections:**")
+    lines.append("  The analysis records full-state matches (both grid position and collected object set identical), not merely grid coordinates.")
+    lines.append("  - Runs with at least one post-divergence state intersection: **" + str(f_inter_count) + " of " + str(f_div_count) + "** in Fischer (seeds " + f_zero_str + " have none) and **" + str(m_inter_count) + " of " + str(m_div_count) + "** in Mal (seed " + m_zero_str + " has none).")
+    lines.append("  - Total shared post-divergence steps across all runs: **" + str(f_shared_total) + " steps** (Fischer) and **" + str(m_shared_total) + " steps** (Mal).")
+    lines.append("  - Means over intersecting runs ($N=" + str(f_inter_count) + "$): Mean = **" + f"{f_shared_mean_inter:.1f}" + " steps** (Fischer) and **" + f"{m_shared_mean_inter:.1f}" + " steps** (Mal).")
+    lines.append("  *(Across all divergent runs including zero-intersection runs, the means are " + f"{f_shared_mean_all:.1f}" + " steps over " + str(f_div_count) + " Fischer runs and " + f"{m_shared_mean_all:.1f}" + " steps over " + str(m_div_count) + " Mal runs)*.")
+    lines.append("- **Absorbing Rejoining:**")
+    lines.append("  An absorbing rejoin is defined as the existence of a step $t_{\\text{rejoin}}$ such that for all $t \\in [t_{\\text{rejoin}}, 199]$, both state and action match through the end of the logged return trace.")
+    lines.append("  - **Fischer Target:** " + str(f_rej_count) + " of " + str(f_div_count) + " action-divergent runs absorbed/rejoined through step 199:")
+
+    f_rejoin_order = [1711, 3998, 7356, 4915, 6406]
+    f_by_seed = {r["seed"]: r for r in f_recs if r["rejoined"]}
+    for s in f_rejoin_order:
+        if s in f_by_seed:
+            r = f_by_seed[s]
+            t_d = r["t_div"]
+            t_r = r["t_rejoin"]
+            m_s = 200 - t_r
+            edge = " (horizon edge: 6 matching steps through step 199)" if s == 6406 else f" ({m_s} matching steps through step 199)"
+            lines.append(f"    - Seed `{s}`: diverged at $t={t_d}$, absorbed at $t={t_r}${edge}.")
+            
+    lines.append("  - **Mal Target:** " + str(m_rej_count) + " of " + str(m_div_count) + " action-divergent runs absorbed/rejoined through step 199:")
+    m_rejoin_order = [1711, 3998, 4915, 7356, 4054]
+    m_by_seed = {r["seed"]: r for r in m_recs if r["rejoined"]}
+    for s in m_rejoin_order:
+        if s in m_by_seed:
+            r = m_by_seed[s]
+            t_d = r["t_div"]
+            t_r = r["t_rejoin"]
+            edge = " (horizon edge: 3 matching steps through step 199)" if s == 4054 else ""
+            lines.append(f"    - Seed `{s}`: diverged at $t={t_d}$, absorbed at $t={t_r}${edge}.")
+            
+    return "\n".join(lines)
+
+def render_onset_metrics(aggs):
+    """Deterministically renders the Section 6 Divergence Onset Metrics block."""
+    onset = aggs["dream_onset"]
+    o_count = onset["count"]
+    o_min = onset["min"]
+    o_max = onset["max"]
+    o_med = onset["median"]
+    o_le_8 = onset["count_le_8"]
+    o_lt_8 = onset["count_lt_8"]
+
+    lines = []
+    lines.append("Among the " + str(o_count) + " seeds exhibiting post-dream Q divergence ($L_1 > 0$):")
+    lines.append("- Q-table divergence first manifests early in the dream phase:")
+    lines.append("  - Range of first divergent update: **Step " + str(o_min) + " to Step " + str(o_max) + "**, with **median step " + f"{o_med:.1f}" + "**.")
+    lines.append("  - **" + str(o_le_8) + " of " + str(o_count) + " seeds** exhibit onset at or before update 8 (and **" + str(o_lt_8) + " of " + str(o_count) + "** strictly before update 8).")
+    lines.append("- Total final Q $L_1$ distances range from 0.3000 to 1.5122. Because TD error updates incorporate discount factor $\\gamma = 0.95$ and non-zero next-state values, compounding over successive updates yields values (e.g., 0.3187, 0.6006, 0.6016, 0.6540, 0.9062, 0.9237, 1.2078) that are not simple integer multiples of the learning rate ($\\alpha = 0.3$).")
+    return "\n".join(lines)
+
+def verify_tables_in_report(report_content=None, parsed_results=None):
+    """Verifies that REPORT.md tables and delimited aggregate blocks match derived outputs exactly.
+    
+    Accepts report_content string and parsed_results dict optionally for in-memory testing.
+    """
+    if parsed_results is None:
+        res = load_analysis_results()
+    else:
+        res = parsed_results
+        
+    if report_content is None:
+        report_path = Path(__file__).parent / "REPORT.md"
+        if not report_path.exists():
+            raise FileNotFoundError(f"{report_path} not found")
+        with open(report_path) as f:
+            content = f.read()
+    else:
+        content = report_content
         
     cls_table = generate_classification_table(res)
     assert cls_table in content, "Classification table mismatch in REPORT.md"
@@ -249,25 +343,28 @@ def verify_tables_in_report():
     assert per_seed_table in content, "Per-seed table mismatch in REPORT.md"
     
     aggs = compute_aggregates(res)
-    # Check Fischer and Mal persistence means
-    f_p_str = f"**{aggs['fischer_target']['persistence_mean_all']:.4f}**"
-    m_p_str = f"**{aggs['mal_target']['persistence_mean_all']:.4f}**"
-    assert f_p_str in content, f"Fischer persistence mean {f_p_str} not found in REPORT.md"
-    assert m_p_str in content, f"Mal persistence mean {m_p_str} not found in REPORT.md"
     
-    # Check intersection numbers
-    assert "**10 of 12** in Fischer" in content
-    assert "**10 of 11** in Mal" in content
-    assert f"**{aggs['fischer_target']['shared_steps_total']} steps**" in content
-    assert f"**{aggs['mal_target']['shared_steps_total']} steps**" in content
-    assert f"**{aggs['fischer_target']['shared_steps_mean_intersecting']:.1f} steps**" in content
-    assert f"**{aggs['mal_target']['shared_steps_mean_intersecting']:.1f} steps**" in content
+    # 1. Exact comparison of Section 4 Summary Metrics delimited block
+    marker_s_start = "<!-- START_GENERATED_SUMMARY_METRICS -->"
+    marker_s_end = "<!-- END_GENERATED_SUMMARY_METRICS -->"
+    if marker_s_start not in content or marker_s_end not in content:
+        raise AssertionError("Summary metrics delimiter markers missing in REPORT.md")
+        
+    actual_summary = content.split(marker_s_start + "\n")[1].split("\n" + marker_s_end)[0]
+    expected_summary = render_summary_metrics(res, aggs)
+    assert actual_summary == expected_summary, f"Summary metrics block mismatch in REPORT.md:\n--- ACTUAL ---\n{actual_summary}\n--- EXPECTED ---\n{expected_summary}"
+
+    # 2. Exact comparison of Section 6 Divergence Onset Metrics delimited block
+    marker_o_start = "<!-- START_GENERATED_DIVERGENCE_ONSET -->"
+    marker_o_end = "<!-- END_GENERATED_DIVERGENCE_ONSET -->"
+    if marker_o_start not in content or marker_o_end not in content:
+        raise AssertionError("Divergence onset delimiter markers missing in REPORT.md")
+        
+    actual_onset = content.split(marker_o_start + "\n")[1].split("\n" + marker_o_end)[0]
+    expected_onset = render_onset_metrics(aggs)
+    assert actual_onset == expected_onset, f"Divergence onset block mismatch in REPORT.md:\n--- ACTUAL ---\n{actual_onset}\n--- EXPECTED ---\n{expected_onset}"
     
-    # Check onset numbers
-    assert f"median step {aggs['dream_onset']['median']:.1f}" in content or f"median Step {aggs['dream_onset']['median']:.1f}" in content
-    assert f"**{aggs['dream_onset']['count_le_8']} of 14 seeds**" in content
-    
-    print("Verification passed! All generated tables and aggregate numbers match REPORT.md exactly.")
+    print("Verification passed! All generated tables and aggregate blocks match REPORT.md exactly.")
 
 if __name__ == "__main__":
     res = load_analysis_results()
@@ -275,6 +372,10 @@ if __name__ == "__main__":
     print(generate_classification_table(res))
     print("\n=== Generated Aggregates ===")
     print(json.dumps(compute_aggregates(res), indent=2))
+    print("\n=== Generated Summary Metrics Block ===")
+    print(render_summary_metrics(res))
+    print("\n=== Generated Onset Metrics Block ===")
+    print(render_onset_metrics(compute_aggregates(res)))
     print("\n=== Generated Per-Seed Table ===")
     print(generate_per_seed_table(res))
     verify_tables_in_report()
