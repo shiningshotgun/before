@@ -101,8 +101,12 @@ def make_fixture_divergent_persistent() -> Dict[str, Any]:
             steps_u.append(build_return_step(20, [2, 2], [], 1, is_random=False, q_val=1.5, next_pos=[3, 2]))
         else:
             # Distinct coordinates and different collected items
-            steps_d.append(build_return_step(t, [2, (t % 8) + 1], [1] if t >= 50 else [], 0, reward=1.0 if t == 50 else -0.01))
-            steps_u.append(build_return_step(t, [(t % 8) + 1, 2], [2] if t >= 80 else [], 1, reward=1.0 if t == 80 else -0.01))
+            col_d_cur = [1] if t > 50 else []
+            col_d_next = [1] if t >= 50 else []
+            col_u_cur = [2] if t > 80 else []
+            col_u_next = [2] if t >= 80 else []
+            steps_d.append(build_return_step(t, [2, (t % 8)], col_d_cur, 0, reward=1.0 if t == 50 else -0.01, next_col=col_d_next))
+            steps_u.append(build_return_step(t, [5, (t % 8)], col_u_cur, 1, reward=1.0 if t == 80 else -0.01, next_col=col_u_next))
             
     return {
         "seed": 9002,
