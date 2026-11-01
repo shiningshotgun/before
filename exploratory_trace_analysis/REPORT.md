@@ -147,11 +147,13 @@ Two specific seeds exhibited contrasting target-asymmetry:
   - Suspended position: `[3, 0]`, items collected: `[]`.
   - Live regime: Object 0 is -1.0, Object 1 is +1.0, Object 2 is +0.5, Object 3 is -0.5.
   - Realized dream regime: Object 0 is +1.0, Object 1 is -1.0, Object 2 is +0.5, Object 3 is +0.5.
-  - Fischer target is identical to realized dream.
-  - Mal target swaps Object 0 and 1: Object 0 is -1.0, Object 1 is +1.0.
-- **Mechanisms Observed in Traces:**
-  - **Fischer Target:** The agent's Q-values reflect dream experience under Fischer where Object 1 was negative (-1.0). At step $t=180$ (pos `[3, 0]`), arm `dream` exhibits a greedy value shift choosing action 2 instead of action 1. It detours, delaying the collection of Object 1 to step 185 (vs step 180 in untransformed) and Object 2 to step 193 (vs step 186). Because timing differed, schedule difference is **True**, though terminal returns are identical (-3.0 vs -3.0).
-  - **Mal Target:** In the Mal target model, Object 1 remains positive (+1.0). The dream updates under Mal did not depress the value of entering Object 1's cell. Consequently, at step 180, the greedy argmax action remained unchanged ($a=1$). Action divergence never occurred across all 200 return steps ($t_{\text{div}} = \text{None}$). Schedule difference is **False**.
+  - Fischer target is identical to realized dream (Object 0 is +1.0, Object 1 is -1.0, Object 2 is +0.5, Object 3 is +0.5).
+  - Mal target swaps uncollected Object 0 and Object 1: Object 0 is -1.0, Object 1 is +1.0, Object 2 is +0.5, Object 3 is +0.5.
+  - Note: The dream phase is simulated under the realized dream regime; the target condition governs the outer return environment reward map, not the dream reward map. Consequently, `dream_trace`, `q_updates_dream` (including the initial update depressing Object 1's entry value to reward -1.01), and `q_table_after_dream` are identical between Fischer and Mal.
+- **Observations in Traces:**
+  - **Fischer Target:** First return-action divergence occurs at step $t=180$ (pos `[3, 0]`), where arm `dream` takes action 2 instead of action 1 (greedy value shift). This detour delays collection of Object 1 to step 185 (vs step 180 in untransformed) and Object 2 to step 193 (vs step 186), resulting in schedule difference **True** (collection schedule contrast), while terminal cumulative returns match (-3.0 vs -3.0, return contrast 0.000).
+  - **Mal Target:** Under the Mal target return environment, arm `dream` and arm `dream_untransformed` choose identical actions at all 200 return steps ($t_{\text{div}} = \text{None}$, zero action differences). Because action trajectories and collection steps are identical, schedule difference is **False** and return contrast is 0.000.
+  - **Causal Limitation:** The logged trace records confirm this empirical asymmetry across return environments, but because return dynamics depend on non-parametric memory lookups and tabular state visitation under different live reward feedback, these traces do not establish a causal mechanism for why the identical post-dream Q-table produced return action divergence under Fischer but not under Mal.
 
 ### Case 2: Seed 9126 (Mal-Only Divergence)
 - **Context at Suspension:**
@@ -197,12 +199,11 @@ Among the 14 seeds exhibiting post-dream Q divergence ($L_1 > 0$):
 ## 8. Disclosures
 
 ### Baseline-Gate Manifest & File Verification
-At the opening of the exploratory session, the following checks were performed against the closed pilot artifacts:
-1. **Prespecification Hash:** `prespec_repeated_draws.md` was verified with SHA-256 `cd7c6d9f6350c83c81c045b75dfe6a3f38bf719cf2fa2c00c30971d219b4f902`, matching `manifest.json`.
-2. **Git Commit HEAD:** `repeated_draws/manifest.json` recorded `git_head: "4c8ad1a3d7abe88112de24b64625879dd2da6e44"`, matching the repository baseline commit. (An earlier draft reported `git_head: null` due to a lookup script querying `head_commit` instead of `git_head`; the committed manifest file itself was always populated with the valid SHA).
-3. **Trace Schemas:** All 35 completed seeds passed `validate_schema` (27 VALID, 8 EXCLUDED).
-4. **Byte Accounting:** Manifest recorded `cumulative_bytes = 418850896`. Summing the 35 `seed_*.json` files yielded 418,850,271 bytes, and `manifest.json` itself accounted for the remaining 625 bytes, matching the driver's directory-glob byte summation.
-5. **Test Baseline:** The existing root test suite passed all 16 tests in 82.12s before exploratory modifications began.
+Provenance and artifact integrity status across the pilot artifacts:
+1. **Prespecification Hash:** The untracked file `prespec_repeated_draws.md` has SHA-256 `cd7c6d9f6350c83c81c045b75dfe6a3f38bf719cf2fa2c00c30971d219b4f902`, matching the hash recorded in `repeated_draws/manifest.json` (verified directly against local files).
+2. **Git Commit HEAD:** `repeated_draws/manifest.json` records `git_head: "4c8ad1a3d7abe88112de24b64625879dd2da6e44"`, matching the repository baseline commit. An earlier report draft incorrectly stated that the manifest recorded `null`; the actual manifest file has always contained this valid SHA. The cause of that incorrect statement is not established in surviving session logs.
+3. **Trace Schemas & Byte Accounting:** Schema validation and byte summation checks over the 35 raw `seed_*.json` files (418,850,271 bytes + 625 bytes for `manifest.json` = 418,850,896 cumulative bytes; 27 VALID, 8 EXCLUDED) are confirmed by current verification of the intact raw files. Specific timestamps or execution logs from the original session's opening gate were not independently retained and are marked as not recoverable rather than backdated.
+4. **Test Baseline:** Root test suite execution (16 tests passed in ~82-96s) reflects current and historical test suite verification.
 
 ### Synthetic Fixture Development History
 - `synthetic_fixtures.py` was committed at Stage 1 (`b882580`).
