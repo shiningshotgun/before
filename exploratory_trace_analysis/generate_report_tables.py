@@ -285,7 +285,7 @@ def render_summary_metrics(res, aggs=None):
     
     # Zero-horizon seed identity and clauses
     f_zh = f_agg["zero_horizon_seeds"]
-    m_zh = f_agg["zero_horizon_seeds"]
+    m_zh = m_agg["zero_horizon_seeds"]
     if f_zh == m_zh:
         if len(f_zh) == 1:
             zh_clause = "treating seed " + str(f_zh[0]) + " ($t_{\\text{div}}=199$, leaving zero post-divergence steps remaining in the 200-step horizon) as having $P_{\\text{state}} = 0.0000$ identically for both targets"

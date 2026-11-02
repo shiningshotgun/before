@@ -357,3 +357,43 @@ def test_horizon_edge_threshold_derivation():
 
     rendered = render_summary_metrics(mut)
     assert "Seed `4915`: diverged at $t=63$, absorbed at $t=195$ (horizon edge: 5 matching steps through step 199)." in rendered
+
+def test_target_specific_zero_horizon_seeds_derivation():
+    """Test 6: Asymmetric zero-horizon mutations render target-specific identities and exclusion denominators."""
+    res = load_analysis_results()
+    mut = copy.deepcopy(res)
+
+    # In mal_target only, find seed 4054, assert it exists and is action-divergent,
+    # then set t_div = 199 and persistence = 0.0.
+    target_record = None
+    for r in mut["targets"]["mal_target"]:
+        if r["seed"] == 4054:
+            target_record = r
+            break
+    assert target_record is not None, "Seed 4054 not found in mal_target"
+    assert target_record["act_div"] is True, "Seed 4054 is not action-divergent in mal_target"
+    target_record["t_div"] = 199
+    target_record["persistence"] = 0.0
+
+    rendered = render_summary_metrics(mut)
+    lines = rendered.splitlines()
+
+    # Find the rule line and exclusion note line
+    rule_line = next(l for l in lines if "Uniform Aggregation Rule:" in l)
+    excl_line = next(l for l in lines if "are excluded, the means across non-empty horizons" in l)
+
+    # Reject false shared-seed claim 'identically for both targets' in the rule line
+    assert "identically for both targets" not in rule_line
+
+    # Assert target-specific zero-horizon identities in the rule line:
+    # Fischer has only 1826; Mal has 1826 and 4054 (order-independent for Mal).
+    assert "Fischer: [1826]" in rule_line
+    assert "Mal: [1826, 4054]" in rule_line or "Mal: [4054, 1826]" in rule_line
+
+    # Assert target-specific zero-horizon identities in the exclusion note:
+    assert "Fischer: [1826]" in excl_line
+    assert "Mal: [1826, 4054]" in excl_line or "Mal: [4054, 1826]" in excl_line
+
+    # Assert the exclusion note reflects derived denominators
+    assert "over 11 Fischer runs and" in excl_line
+    assert "over 9 Mal runs" in excl_line
