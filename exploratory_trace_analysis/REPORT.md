@@ -91,16 +91,16 @@ Among the action-divergent runs, trajectories do not simply branch and remain pe
 - **Absorbing Rejoining:**
   An absorbing rejoin is defined as the existence of a step $t_{\text{rejoin}}$ such that for all $t \in [t_{\text{rejoin}}, 199]$, both state and action match through the end of the logged return trace.
   - **Fischer Target:** 5 of 12 action-divergent runs absorbed/rejoined through step 199:
-    - Seed `1711`: diverged at $t=24$, absorbed at $t=35$ (165 matching steps through step 199).
     - Seed `3998`: diverged at $t=27$, absorbed at $t=31$ (169 matching steps through step 199).
+    - Seed `1711`: diverged at $t=24$, absorbed at $t=35$ (165 matching steps through step 199).
     - Seed `7356`: diverged at $t=0$, absorbed at $t=115$ (85 matching steps through step 199).
     - Seed `4915`: diverged at $t=63$, absorbed at $t=175$ (25 matching steps through step 199).
     - Seed `6406`: diverged at $t=121$, absorbed at $t=194$ (horizon edge: 6 matching steps through step 199).
   - **Mal Target:** 5 of 11 action-divergent runs absorbed/rejoined through step 199:
-    - Seed `1711`: diverged at $t=24$, absorbed at $t=35$.
-    - Seed `3998`: diverged at $t=27$, absorbed at $t=31$.
-    - Seed `4915`: diverged at $t=78$, absorbed at $t=112$.
-    - Seed `7356`: diverged at $t=0$, absorbed at $t=115$.
+    - Seed `3998`: diverged at $t=27$, absorbed at $t=31$ (169 matching steps through step 199).
+    - Seed `1711`: diverged at $t=24$, absorbed at $t=35$ (165 matching steps through step 199).
+    - Seed `4915`: diverged at $t=78$, absorbed at $t=112$ (88 matching steps through step 199).
+    - Seed `7356`: diverged at $t=0$, absorbed at $t=115$ (85 matching steps through step 199).
     - Seed `4054`: diverged at $t=20$, absorbed at $t=197$ (horizon edge: 3 matching steps through step 199).
 <!-- END_GENERATED_SUMMARY_METRICS -->
 

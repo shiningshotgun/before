@@ -195,3 +195,165 @@ def test_real_verifier_responds_to_parsed_record_mutations():
     freshly_rendered = render_summary_metrics(mutated_res, new_aggs)
     assert f"**{new_f_mean:.4f}**" in freshly_rendered
     assert "**0.3132**" not in freshly_rendered
+
+def test_rejoining_identity_derived_from_records():
+    """Test 1: Renaming rejoining seed 1711 to 99999 updates bullets and fails stale verification."""
+    res = load_analysis_results()
+    report_path = Path(__file__).parent / "REPORT.md"
+    with open(report_path) as f:
+        real_content = f.read()
+
+    mutated = copy.deepcopy(res)
+    # Rename seed 1711 to 99999 in targets and dream_q_divergence
+    for r in mutated["targets"]["fischer_target"]:
+        if r["seed"] == 1711:
+            r["seed"] = 99999
+    for r in mutated["targets"]["mal_target"]:
+        if r["seed"] == 1711:
+            r["seed"] = 99999
+    for item in mutated["dream_q_divergence"]:
+        if item["seed"] == 1711:
+            item["seed"] = 99999
+
+    # Fresh render must list 99999 and must not list 1711
+    rendered = render_summary_metrics(mutated)
+    assert "Seed `99999`:" in rendered
+    assert "Seed `1711`:" not in rendered
+
+    # Update classification table and per-seed table in real_content copy so test isolates summary metrics block verification failure
+    old_cls = generate_classification_table(res)
+    new_cls = generate_classification_table(mutated)
+    old_per_seed = generate_per_seed_table(res)
+    new_per_seed = generate_per_seed_table(mutated)
+    report_copy = real_content.replace(old_cls, new_cls).replace(old_per_seed, new_per_seed)
+
+    # verify_tables_in_report must fail against mutated records when summary block is unmutated
+    with pytest.raises(AssertionError, match="Summary metrics block mismatch"):
+        verify_tables_in_report(report_content=report_copy, parsed_results=mutated)
+
+def test_persistence_max_derived_from_records():
+    """Test 2: Mutating Mal divergent persistence max to 0.9500 updates render and fails stale verifier."""
+    res = load_analysis_results()
+    report_path = Path(__file__).parent / "REPORT.md"
+    with open(report_path) as f:
+        real_content = f.read()
+
+    mutated = copy.deepcopy(res)
+    # Set one Mal divergent record's persistence to 0.9500
+    for r in mutated["targets"]["mal_target"]:
+        if r["seed"] == 1711:
+            r["persistence"] = 0.9500
+
+    rendered = render_summary_metrics(mutated)
+    assert "Max = 0.9500" in rendered
+    assert "Max = 0.6983" not in rendered
+
+    old_per_seed = generate_per_seed_table(res)
+    new_per_seed = generate_per_seed_table(mutated)
+    report_copy = real_content.replace(old_per_seed, new_per_seed)
+
+    with pytest.raises(AssertionError, match="Summary metrics block mismatch"):
+        verify_tables_in_report(report_content=report_copy, parsed_results=mutated)
+
+def test_zero_horizon_identity_and_denominators():
+    """Test 3: Zero-horizon seed identity and exclusion denominators derived from records."""
+    res = load_analysis_results()
+
+    # Part a: Move t_div == 199 from 1826 to a different divergent seed (3998)
+    mut_a = copy.deepcopy(res)
+    for tgt in ["fischer_target", "mal_target"]:
+        for r in mut_a["targets"][tgt]:
+            if r["seed"] == 1826:
+                r["t_div"] = 50
+                r["persistence"] = 0.5000
+            elif r["seed"] == 3998:
+                r["t_div"] = 199
+                r["persistence"] = 0.0000
+
+    rendered_a = render_summary_metrics(mut_a)
+    lines_a = rendered_a.splitlines()
+    # The first line of State Persistence rule and the exclusion note must name 3998 and not 1826
+    rule_lines = [l for l in lines_a if "treating seed" in l or "excluded due to an empty" in l]
+    assert len(rule_lines) == 2
+    assert all("3998" in l for l in rule_lines)
+    assert all("1826" not in l for l in rule_lines)
+
+    # Part b: Additionally set a second divergent seed's t_div to 199 in both targets
+    mut_b = copy.deepcopy(mut_a)
+    for tgt in ["fischer_target", "mal_target"]:
+        for r in mut_b["targets"][tgt]:
+            if r["seed"] == 7356:
+                r["t_div"] = 199
+                r["persistence"] = 0.0000
+
+    rendered_b = render_summary_metrics(mut_b)
+    # Both zero-horizon seeds must be named and denominators drop to 10 and 9
+    assert "3998" in rendered_b and "7356" in rendered_b
+    assert "over 10 Fischer runs and" in rendered_b
+    assert "over 9 Mal runs" in rendered_b
+
+def test_onset_range_and_examples_derivation():
+    """Test 4: Onset final L1 range and example list derived dynamically."""
+    res = load_analysis_results()
+    report_path = Path(__file__).parent / "REPORT.md"
+    with open(report_path) as f:
+        real_content = f.read()
+
+    # Part a: Endpoint mutation - set seed 9126 final_l1 to 9.0 in both targets
+    mut_a = copy.deepcopy(res)
+    for item in mut_a["dream_q_divergence"]:
+        if item["seed"] == 9126:
+            item["final_l1"] = 9.0
+    for tgt in ["fischer_target", "mal_target"]:
+        for r in mut_a["targets"][tgt]:
+            if r["seed"] == 9126:
+                r["q_l1"] = 9.0
+
+    aggs_a = compute_aggregates(mut_a)
+    rendered_onset_a = render_onset_metrics(aggs_a)
+    assert "range from 0.3000 to 9.0000" in rendered_onset_a
+    # Example list must be exactly the current seven values: 9.0 excluded as endpoint and multiple of 0.3
+    assert "(e.g., 0.3187, 0.6006, 0.6016, 0.6540, 0.9062, 0.9237, 1.2078)" in rendered_onset_a
+
+    # Update per-seed table in real_content copy so test isolates onset block mismatch
+    old_per_seed = generate_per_seed_table(res)
+    new_per_seed_a = generate_per_seed_table(mut_a)
+    report_copy_a = real_content.replace(old_per_seed, new_per_seed_a)
+
+    with pytest.raises(AssertionError, match="Divergence onset block mismatch"):
+        verify_tables_in_report(report_content=report_copy_a, parsed_results=mut_a)
+
+    # Part b: Example inclusion - set seed 1022 final_l1 to 0.7777 in both targets
+    mut_b = copy.deepcopy(res)
+    for item in mut_b["dream_q_divergence"]:
+        if item["seed"] == 1022:
+            item["final_l1"] = 0.7777
+    for tgt in ["fischer_target", "mal_target"]:
+        for r in mut_b["targets"][tgt]:
+            if r["seed"] == 1022:
+                r["q_l1"] = 0.7777
+
+    aggs_b = compute_aggregates(mut_b)
+    rendered_onset_b = render_onset_metrics(aggs_b)
+    assert "range from 0.3000 to 1.5122" in rendered_onset_b
+    assert "(e.g., 0.3187, 0.6006, 0.6016, 0.6540, 0.7777, 0.9062, 0.9237, 1.2078)" in rendered_onset_b
+
+    new_per_seed_b = generate_per_seed_table(mut_b)
+    report_copy_b = real_content.replace(old_per_seed, new_per_seed_b)
+
+    with pytest.raises(AssertionError, match="Divergence onset block mismatch"):
+        verify_tables_in_report(report_content=report_copy_b, parsed_results=mut_b)
+
+def test_horizon_edge_threshold_derivation():
+    """Test 5: Setting a rejoined seed's t_rejoin below threshold adds horizon edge prefix with derived count."""
+    res = load_analysis_results()
+    mut = copy.deepcopy(res)
+
+    # In Fischer target, seed 4915 had t_rejoin=175 (matching steps = 25 >= 10).
+    # Move its t_rejoin to 195 (matching steps = 5 < 10 threshold).
+    for r in mut["targets"]["fischer_target"]:
+        if r["seed"] == 4915:
+            r["t_rejoin"] = 195
+
+    rendered = render_summary_metrics(mut)
+    assert "Seed `4915`: diverged at $t=63$, absorbed at $t=195$ (horizon edge: 5 matching steps through step 199)." in rendered

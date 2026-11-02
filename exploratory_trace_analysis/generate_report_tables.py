@@ -165,6 +165,9 @@ def generate_per_seed_table(res):
         
     return "\n".join(lines)
 
+# Threshold for flagging horizon-edge rejoining runs in report bullets
+HORIZON_EDGE_MATCHING_STEPS_THRESHOLD = 10  # Matching-step count strictly below this threshold receives 'horizon edge: ' label
+
 def compute_aggregates(res):
     out = {}
     for tgt in ["fischer_target", "mal_target"]:
@@ -177,18 +180,24 @@ def compute_aggregates(res):
         shared_steps = [r["transient_intersections_count"] for r in div_recs]
         intersecting = [c for c in shared_steps if c > 0]
         rejoins = [r for r in div_recs if r["rejoined"]]
+        # Order rejoining records deterministically: ascending t_rejoin, ties broken by seed
+        sorted_rejoins = sorted(rejoins, key=lambda r: (r["t_rejoin"], r["seed"]))
         
         out[tgt] = {
             "total_count": len(recs),
             "div_count": len(div_recs),
+            "persistence_min": min(persists_all) if persists_all else 0.0,
+            "persistence_max": max(persists_all) if persists_all else 0.0,
             "persistence_mean_all": round(statistics.mean(persists_all), 4) if persists_all else 0.0,
             "persistence_mean_no199": round(statistics.mean(persists_no199), 4) if persists_no199 else 0.0,
+            "persistence_no199_count": len(persists_no199),
+            "zero_horizon_seeds": [r["seed"] for r in div_recs if r["t_div"] == 199],
             "intersecting_runs_count": len(intersecting),
             "shared_steps_total": sum(shared_steps),
             "shared_steps_mean_intersecting": round(statistics.mean(intersecting), 1) if intersecting else 0.0,
             "shared_steps_mean_all_div": round(statistics.mean(shared_steps), 1) if shared_steps else 0.0,
             "rejoining_runs_count": len(rejoins),
-            "rejoining_seeds": [r["seed"] for r in rejoins]
+            "rejoining_seeds": [r["seed"] for r in sorted_rejoins]
         }
         
     q_divs = res["dream_q_divergence"]
@@ -203,6 +212,7 @@ def compute_aggregates(res):
         onset_map[s][tgt] = (step, l1)
         
     reduced_steps = []
+    reduced_l1 = []
     for s, tgts in onset_map.items():
         if len(tgts) > 1:
             steps_set = {v[0] for v in tgts.values()}
@@ -212,10 +222,24 @@ def compute_aggregates(res):
             if len(l1_set) > 1:
                 raise ValueError(f"Paired target dream final L1 disagreement for seed {s}: {tgts}")
         first_step = next(iter(tgts.values()))[0]
+        final_l1 = next(iter(tgts.values()))[1]
         if first_step is not None:
             reduced_steps.append(first_step)
+        if final_l1 is not None and final_l1 > 0:
+            reduced_l1.append(final_l1)
             
     steps = sorted(reduced_steps)
+    min_l1 = min(reduced_l1) if reduced_l1 else 0.0
+    max_l1 = max(reduced_l1) if reduced_l1 else 0.0
+    
+    distinct_l1 = sorted(list(set(reduced_l1)))
+    examples = []
+    for v in distinct_l1:
+        is_mult = abs(v / 0.3 - round(v / 0.3)) < 1e-9
+        is_endpoint = (abs(v - min_l1) < 1e-9 or abs(v - max_l1) < 1e-9)
+        if not is_mult and not is_endpoint:
+            examples.append(f"{v:.4f}")
+            
     out["dream_onset"] = {
         "count": len(steps),
         "steps": steps,
@@ -223,7 +247,10 @@ def compute_aggregates(res):
         "max": max(steps) if steps else None,
         "median": statistics.median(steps) if steps else 0.0,
         "count_le_8": sum(1 for x in steps if x <= 8),
-        "count_lt_8": sum(1 for x in steps if x < 8)
+        "count_lt_8": sum(1 for x in steps if x < 8),
+        "l1_min": min_l1,
+        "l1_max": max_l1,
+        "l1_examples": examples
     }
     return out
 
@@ -246,8 +273,34 @@ def render_summary_metrics(res, aggs=None):
     m_div_count = m_agg["div_count"]
     f_p_all = f_agg["persistence_mean_all"]
     m_p_all = m_agg["persistence_mean_all"]
+    f_p_min = f_agg["persistence_min"]
+    f_p_max = f_agg["persistence_max"]
+    m_p_min = m_agg["persistence_min"]
+    m_p_max = m_agg["persistence_max"]
+    
     f_p_no199 = f_agg["persistence_mean_no199"]
     m_p_no199 = m_agg["persistence_mean_no199"]
+    f_no199_count = f_agg["persistence_no199_count"]
+    m_no199_count = m_agg["persistence_no199_count"]
+    
+    # Zero-horizon seed identity and clauses
+    f_zh = f_agg["zero_horizon_seeds"]
+    m_zh = f_agg["zero_horizon_seeds"]
+    if f_zh == m_zh:
+        if len(f_zh) == 1:
+            zh_clause = "treating seed " + str(f_zh[0]) + " ($t_{\\text{div}}=199$, leaving zero post-divergence steps remaining in the 200-step horizon) as having $P_{\\text{state}} = 0.0000$ identically for both targets"
+            zh_excl_clause = "If seed " + str(f_zh[0]) + " is excluded due to an empty post-divergence horizon"
+        elif len(f_zh) > 1:
+            seeds_str = ", ".join(str(s) for s in f_zh)
+            zh_clause = "treating seeds " + seeds_str + " ($t_{\\text{div}}=199$, leaving zero post-divergence steps remaining in the 200-step horizon) as having $P_{\\text{state}} = 0.0000$ identically for both targets"
+            zh_excl_clause = "If seeds " + seeds_str + " are excluded due to an empty post-divergence horizon"
+        else:
+            zh_clause = "with all divergent runs having non-empty post-divergence horizons"
+            zh_excl_clause = "With no seeds excluded due to an empty post-divergence horizon"
+    else:
+        zh_clause = "treating zero-horizon seeds (Fischer: " + str(f_zh) + ", Mal: " + str(m_zh) + ") as having $P_{\\text{state}} = 0.0000$"
+        zh_excl_clause = "If zero-horizon seeds (Fischer: " + str(f_zh) + ", Mal: " + str(m_zh) + ") are excluded"
+        
     f_inter_count = f_agg["intersecting_runs_count"]
     m_inter_count = m_agg["intersecting_runs_count"]
     f_shared_total = f_agg["shared_steps_total"]
@@ -261,10 +314,10 @@ def render_summary_metrics(res, aggs=None):
     
     lines = []
     lines.append("- **State Persistence ($P_{\\text{state}}$):** Fraction of post-divergence steps ($t > t_{\\text{div}}$) spent in different states.")
-    lines.append("  *Uniform Aggregation Rule:* Includes all action-divergent runs ($N=" + str(f_div_count) + "$ in Fischer, $N=" + str(m_div_count) + "$ in Mal), treating seed 1826 ($t_{\\text{div}}=199$, leaving zero post-divergence steps remaining in the 200-step horizon) as having $P_{\\text{state}} = 0.0000$ identically for both targets:")
-    lines.append("  - Fischer Target (" + str(f_div_count) + " divergent runs): Mean = **" + f"{f_p_all:.4f}" + "** (Min = 0.0000, Max = 1.0000)")
-    lines.append("  - Mal Target (" + str(m_div_count) + " divergent runs): Mean = **" + f"{m_p_all:.4f}" + "** (Min = 0.0000, Max = 0.6983)")
-    lines.append("  *(If seed 1826 is excluded due to an empty post-divergence horizon, the means across non-empty horizons are " + f"{f_p_no199:.4f}" + " over " + str(f_div_count-1) + " Fischer runs and " + f"{m_p_no199:.4f}" + " over " + str(m_div_count-1) + " Mal runs; the previous draft inadvertently reported the 10-run Mal mean alongside the 12-run Fischer mean)*.")
+    lines.append("  *Uniform Aggregation Rule:* Includes all action-divergent runs ($N=" + str(f_div_count) + "$ in Fischer, $N=" + str(m_div_count) + "$ in Mal), " + zh_clause + ":")
+    lines.append("  - Fischer Target (" + str(f_div_count) + " divergent runs): Mean = **" + f"{f_p_all:.4f}" + "** (Min = " + f"{f_p_min:.4f}" + ", Max = " + f"{f_p_max:.4f}" + ")")
+    lines.append("  - Mal Target (" + str(m_div_count) + " divergent runs): Mean = **" + f"{m_p_all:.4f}" + "** (Min = " + f"{m_p_min:.4f}" + ", Max = " + f"{m_p_max:.4f}" + ")")
+    lines.append("  *(" + zh_excl_clause + ", the means across non-empty horizons are " + f"{f_p_no199:.4f}" + " over " + str(f_no199_count) + " Fischer runs and " + f"{m_p_no199:.4f}" + " over " + str(m_no199_count) + " Mal runs; the previous draft inadvertently reported the 10-run Mal mean alongside the 12-run Fischer mean)*.")
     lines.append("- **Transient State Intersections:**")
     lines.append("  The analysis records full-state matches (both grid position and collected object set identical), not merely grid coordinates.")
     lines.append("  - Runs with at least one post-divergence state intersection: **" + str(f_inter_count) + " of " + str(f_div_count) + "** in Fischer (seeds " + f_zero_str + " have none) and **" + str(m_inter_count) + " of " + str(m_div_count) + "** in Mal (seed " + m_zero_str + " has none).")
@@ -273,29 +326,22 @@ def render_summary_metrics(res, aggs=None):
     lines.append("  *(Across all divergent runs including zero-intersection runs, the means are " + f"{f_shared_mean_all:.1f}" + " steps over " + str(f_div_count) + " Fischer runs and " + f"{m_shared_mean_all:.1f}" + " steps over " + str(m_div_count) + " Mal runs)*.")
     lines.append("- **Absorbing Rejoining:**")
     lines.append("  An absorbing rejoin is defined as the existence of a step $t_{\\text{rejoin}}$ such that for all $t \\in [t_{\\text{rejoin}}, 199]$, both state and action match through the end of the logged return trace.")
-    lines.append("  - **Fischer Target:** " + str(f_rej_count) + " of " + str(f_div_count) + " action-divergent runs absorbed/rejoined through step 199:")
-
-    f_rejoin_order = [1711, 3998, 7356, 4915, 6406]
-    f_by_seed = {r["seed"]: r for r in f_recs if r["rejoined"]}
-    for s in f_rejoin_order:
-        if s in f_by_seed:
-            r = f_by_seed[s]
+    
+    # Rejoining bullets derived dynamically: ascending t_rejoin, ties broken by seed
+    for tgt_label, recs, count, div_c in [
+        ("Fischer Target", f_recs, f_rej_count, f_div_count),
+        ("Mal Target", m_recs, m_rej_count, m_div_count)
+    ]:
+        lines.append("  - **" + tgt_label + ":** " + str(count) + " of " + str(div_c) + " action-divergent runs absorbed/rejoined through step 199:")
+        rejoins = [r for r in recs if r["rejoined"]]
+        sorted_rejoins = sorted(rejoins, key=lambda r: (r["t_rejoin"], r["seed"]))
+        for r in sorted_rejoins:
+            s = r["seed"]
             t_d = r["t_div"]
             t_r = r["t_rejoin"]
             m_s = 200 - t_r
-            edge = " (horizon edge: 6 matching steps through step 199)" if s == 6406 else f" ({m_s} matching steps through step 199)"
-            lines.append(f"    - Seed `{s}`: diverged at $t={t_d}$, absorbed at $t={t_r}${edge}.")
-            
-    lines.append("  - **Mal Target:** " + str(m_rej_count) + " of " + str(m_div_count) + " action-divergent runs absorbed/rejoined through step 199:")
-    m_rejoin_order = [1711, 3998, 4915, 7356, 4054]
-    m_by_seed = {r["seed"]: r for r in m_recs if r["rejoined"]}
-    for s in m_rejoin_order:
-        if s in m_by_seed:
-            r = m_by_seed[s]
-            t_d = r["t_div"]
-            t_r = r["t_rejoin"]
-            edge = " (horizon edge: 3 matching steps through step 199)" if s == 4054 else ""
-            lines.append(f"    - Seed `{s}`: diverged at $t={t_d}$, absorbed at $t={t_r}${edge}.")
+            prefix = "horizon edge: " if m_s < HORIZON_EDGE_MATCHING_STEPS_THRESHOLD else ""
+            lines.append(f"    - Seed `{s}`: diverged at $t={t_d}$, absorbed at $t={t_r}$ ({prefix}{m_s} matching steps through step 199).")
             
     return "\n".join(lines)
 
@@ -308,14 +354,18 @@ def render_onset_metrics(aggs):
     o_med = onset["median"]
     o_le_8 = onset["count_le_8"]
     o_lt_8 = onset["count_lt_8"]
+    l1_min = onset["l1_min"]
+    l1_max = onset["l1_max"]
+    examples_str = ", ".join(onset["l1_examples"])
 
     lines = []
     lines.append("Among the " + str(o_count) + " seeds exhibiting post-dream Q divergence ($L_1 > 0$):")
     lines.append("- Q-table divergence first manifests early in the dream phase:")
     lines.append("  - Range of first divergent update: **Step " + str(o_min) + " to Step " + str(o_max) + "**, with **median step " + f"{o_med:.1f}" + "**.")
     lines.append("  - **" + str(o_le_8) + " of " + str(o_count) + " seeds** exhibit onset at or before update 8 (and **" + str(o_lt_8) + " of " + str(o_count) + "** strictly before update 8).")
-    lines.append("- Total final Q $L_1$ distances range from 0.3000 to 1.5122. Because TD error updates incorporate discount factor $\\gamma = 0.95$ and non-zero next-state values, compounding over successive updates yields values (e.g., 0.3187, 0.6006, 0.6016, 0.6540, 0.9062, 0.9237, 1.2078) that are not simple integer multiples of the learning rate ($\\alpha = 0.3$).")
+    lines.append("- Total final Q $L_1$ distances range from " + f"{l1_min:.4f}" + " to " + f"{l1_max:.4f}" + ". Because TD error updates incorporate discount factor $\\gamma = 0.95$ and non-zero next-state values, compounding over successive updates yields values (e.g., " + examples_str + ") that are not simple integer multiples of the learning rate ($\\alpha = 0.3$).")
     return "\n".join(lines)
+
 
 def verify_tables_in_report(report_content=None, parsed_results=None):
     """Verifies that REPORT.md tables and delimited aggregate blocks match derived outputs exactly.
