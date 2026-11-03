@@ -1,4 +1,6 @@
-# Remnant - Empirical Baseline & Verification Report
+# before - Empirical Baseline & Verification Report
+
+Note: This report's runs predate the project rename from Remnant to `before`, so historical execution paths (`~/Documents/remnant`) and naming are retained as recorded.
 
 This document records the measured baseline behavior, pass criteria rationale, and empirical results derived on this machine for Remnant (including paired dream-arm RNG streams, dream rollout coverage logging, Mal target live-regime guards, scoped test collection, and decision-trace analysis). All runs were executed strictly using `.venv` Python 3.11 inside `~/Documents/remnant`, with gates enforcing assertions with nonzero exits on failure.
 

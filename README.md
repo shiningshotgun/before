@@ -55,7 +55,7 @@ Decomposing return-phase events shows how changed Q-values shifted the timing an
 
 ## Quickstart
 
-The core project library has **zero external dependencies** and uses the Python standard library only. `pytest` and `matplotlib` are used for test verification and figure generation.
+The core project library has **zero external dependencies** and uses Python 3.11 (matching EVIDENCE.md and CI). `pytest` and `matplotlib` are used for test verification and figure generation.
 
 ### Installation
 
@@ -63,7 +63,7 @@ The core project library has **zero external dependencies** and uses the Python 
 git clone https://github.com/shiningshotgun/before.git
 cd before
 
-python3 -m venv .venv
+python3.11 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
@@ -77,6 +77,13 @@ All analysis scripts and viewers operate in read-only mode over the committed JS
    python -m pytest
    ```
    *Runs 16 tests covering environment mechanics, memory invariants, model learning, and full-state passive-logging deterministic equivalence on seed 42 (~1 minute runtime).*
+
+   Running the full exploratory suite (including the 2 data-dependent tests that verify headline analytic results against the raw traces) requires first fetching the traces from release `v1.0-pilot-data`:
+   ```bash
+   gh release download v1.0-pilot-data --dir repeated_draws
+   pytest exploratory_trace_analysis/
+   ```
+   *Without `repeated_draws/`, those two data-dependent tests skip explicitly.*
 
 2. **Inspect Decision-Trace Measures:**
    ```bash
@@ -121,6 +128,13 @@ before/
 │   ├── model.py             # Empirical world model (transitions & rewards)
 │   ├── transform.py         # Counterfactual dream regime transformations
 │   └── agent.py             # Tabular Q-learning agent with memory blend
+├── exploratory_trace_analysis/ # Post-hoc exploratory trace analysis package
+│   ├── PLAN.md              # Exploratory analysis plan & fixture specifications
+│   ├── REPORT.md            # Comprehensive post-hoc results and disclosures report
+│   ├── run_analysis.py      # Pipeline runner executing classification & metrics
+│   ├── trace_parser.py      # Independent parser and metrics extraction
+│   ├── generate_report_tables.py # Dynamic report block generator & verifier
+│   └── tests                # Test suite (mutation, parser, synthetic, anchor)
 ├── tests/                   # Verification test suite
 │   ├── test_foundations.py  # 14 foundation tests (rules, mechanics, guards)
 │   └── test_equivalence_gate.py # Full-state non-interference equivalence tests
@@ -140,6 +154,7 @@ before/
 ├── run_stage12.py           # Stage 1 (Q-eval) & Stage 2 (model accuracy) runner
 ├── run_stage3.py            # Stage 3 dream environment runner
 ├── run_stage4.py            # Stage 4 full experiment runner
+├── prespec_repeated_draws.md    # Prespecification for closed repeated-draws pilot
 ├── EVIDENCE.md              # Canonical protocol specification & results
 ├── requirements.txt         # Dev dependencies (pytest, matplotlib)
 └── LICENSE                  # MIT License
@@ -151,6 +166,9 @@ before/
 
 - [EVIDENCE.md](EVIDENCE.md): Canonical protocol descriptions, validity rules, and verified empirical metrics.
 - [docs/ANALYSIS.md](docs/ANALYSIS.md): Comprehensive report on the passive-listener equivalence gate, descriptive measures, and return reward composition.
+- [exploratory_trace_analysis/REPORT.md](exploratory_trace_analysis/REPORT.md): Comprehensive post-hoc exploratory report analyzing propagation, rejoining, and matched-state decisions across the 27 valid pilot seeds.
+- [exploratory_trace_analysis/PLAN.md](exploratory_trace_analysis/PLAN.md): Analysis plan and synthetic fixture specifications for post-hoc trace evaluation.
+- Prespecification for the closed repeated-draws pilot is tracked at repo root ([prespec_repeated_draws.md](prespec_repeated_draws.md)), while its raw traces are published in GitHub release `v1.0-pilot-data`.
 
 ---
 

@@ -2,9 +2,9 @@
 
 ## 1. Scope & Status Statement
 
-This document defines the post-hoc exploratory analysis plan for the closed Remnant pilot dataset located in `~/Documents/remnant/repeated_draws/`. 
+This document defines the post-hoc exploratory analysis plan for the closed `before` pilot dataset located in `repeated_draws/` (note: the pilot predates the project rename from Remnant to `before`). 
 
-- **Independence from Closed Pilot:** The Remnant repeated paired draws pilot was prespecified in `prespec_repeated_draws.md` with an analysis-once commitment. Its conclusions and artifacts are immutable. Everything produced in `exploratory_trace_analysis/` is post-hoc, exploratory, and hypothesis-generating.
+- **Independence from Closed Pilot:** The repeated paired draws pilot was prespecified in `prespec_repeated_draws.md` with an analysis-once commitment. Its conclusions and artifacts are immutable. Everything produced in `exploratory_trace_analysis/` is post-hoc, exploratory, and hypothesis-generating.
 - **No Causal or Performance Claims:** Findings are strictly descriptive of observational traces within this specific discrete tabular gridworld under fixed hyperparameters. No claims of causal benefit, cognitive advantage, or general population validity are made.
 - **Scope Boundaries:** No new seeds, runs, replays, or model evaluations will be performed. Nested dream layers and external environments remain out of scope.
 
