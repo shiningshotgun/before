@@ -1,8 +1,6 @@
 # before - Empirical Baseline & Verification Report
 
-Note: This report's runs predate the project rename from Remnant to `before`, so historical execution paths (`~/Documents/remnant`) and naming are retained as recorded.
-
-This document records the measured baseline behavior, pass criteria rationale, and empirical results derived on this machine for Remnant (including paired dream-arm RNG streams, dream rollout coverage logging, Mal target live-regime guards, scoped test collection, and decision-trace analysis). All runs were executed strictly using `.venv` Python 3.11 inside `~/Documents/remnant`, with gates enforcing assertions with nonzero exits on failure.
+This document records the measured baseline behavior, pass criteria rationale, and empirical results derived on this machine for `before` (including paired dream-arm RNG streams, dream rollout coverage logging, Mal target live-regime guards, scoped test collection, and decision-trace analysis). All runs were executed strictly using `.venv` Python 3.11 inside the project directory, with gates enforcing assertions with nonzero exits on failure.
 
 ---
 
@@ -134,6 +132,7 @@ To investigate whether dream transformation changes internal mechanics (actions,
 2. **Strict Non-Interference:** On exploratory random actions (`rng.random() < self.eps`), the policy does not evaluate action values or call `memory.value()`. Instrumentation records `is_random=True` and `None` for values without invoking `memory.value()`, preventing desynchronization of `memory._rng`.
 3. **Equivalence Gate Passed (`tests/test_equivalence_gate.py`):** Verified 100% full-state deterministic equivalence between logging-on and logging-off on seed 42 (identical live/dream/return action sequences, final Q-tables, episodic memory contents, memory RNG state, and all stream final RNG states). In addition, summary returns and coverage across all seeds in v4 match the recorded v3 baseline numbers as a separately verified check.
 4. **Trace Artifact:** Full step-by-step traces recorded to `checkpoints/stage4_runs_v4.json` across all 5 prespecified seeds (`[13, 23, 42, 77, 99]`).
+5. **Artifact Schema Provenance:** The committed `checkpoints/stage4_runs_v4.json` was recorded by an earlier revision of `run_stage4.py`. Re-running the current script overwrites it with a superset record that adds diagnostic fields (`live_actions`, `dream_actions`, `return_actions`, `final_q`, `final_memory_entries`, `final_memory_rng_state`, `final_rng_states`, `final_live_rng_state`, `final_transform_rng_state`). Every field present in the committed artifact is reproduced with identical values (verified on seed 42, including the complete dream and return traces; the other four seeds were not re-run); downstream analysis scripts read only those shared fields and are unaffected. The committed artifact remains the canonical record.
 
 ### Four Descriptive Measures
 

@@ -204,9 +204,18 @@ def test_mal_controlled_mismatch_differs_on_uncollected():
     assert mal[0] == -1.0 and mal[1] == 1.0
     assert all(o in uncollected for o in swapped_pair)
 
-def test_mal_target_differs_from_live_regime_guard():
-    """Verify validity rule 3 guard that mal_target cannot equal live regime."""
-    live_regime = {0: -1.0, 1: 1.0, 2: 0.5, 3: -0.5}
-    # Synthetic dream which when swapped would produce live_regime
-    mal_target_identical = dict(live_regime)
-    assert mal_target_identical == live_regime
+def test_mal_target_differs_from_live_regime_guard(monkeypatch):
+    """Validity Rule 3: when the constructed Mal target equals the live regime at
+    suspension, the run must be excluded with the Rule 3 exclusion reason."""
+    import run_stage4 as rs4
+    live_regime = rs4.CONFIG['regimes'][1]
+
+    def fake_construct_mal_meanings(realized_dream, uncollected):
+        pair = tuple(uncollected[:2])
+        return dict(live_regime), pair, 2.0
+
+    monkeypatch.setattr(rs4, 'construct_mal_meanings', fake_construct_mal_meanings)
+    res = rs4.run_seed(42)
+    assert res['status'] == 'EXCLUDED'
+    assert res['exclusion_reason'] == 'Validity Rule 3 violated: mal_target equals live regime at suspension.'
+    assert res['mal_target'] == res['live_regime_at_suspension']

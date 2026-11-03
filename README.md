@@ -7,12 +7,6 @@
 
 ---
 
-## Project Identity Note
-
-This repository contains **before**, the preserved predecessor prototype formerly called *Remnant*. The separate, new time-loop research project owns the name **Remnant**. Historical run records, provenance snapshots, and baseline execution directory paths retain earlier naming where byte-preservation is required, but the active codebase, package, and remote repository are named **before**.
-
----
-
 ## About
 
 **before** investigates an agent's behavioral adaptation under silent shifts in environmental meaning. 
@@ -76,7 +70,7 @@ All analysis scripts and viewers operate in read-only mode over the committed JS
    ```bash
    python -m pytest
    ```
-   *Runs 16 tests covering environment mechanics, memory invariants, model learning, and full-state passive-logging deterministic equivalence on seed 42 (~1 minute runtime).*
+   *Runs 16 tests covering environment mechanics, memory invariants, model learning, and full-state passive-logging deterministic equivalence on seed 42 (~1-3 minutes, environment-dependent).*
 
    Running the full exploratory suite (including the 2 data-dependent tests that verify headline analytic results against the raw traces) requires first fetching the traces from release `v1.0-pilot-data`:
    ```bash
@@ -114,7 +108,7 @@ All analysis scripts and viewers operate in read-only mode over the committed JS
 ```bash
 python run_stage4.py
 ```
-> **Warning:** Running `python run_stage4.py` executes the full 5-seed Stage 4 protocol from scratch and **overwrites** `checkpoints/stage4_runs_v4.json` in place.
+> **Warning:** Running `python run_stage4.py` executes the full 5-seed Stage 4 protocol from scratch and **overwrites** `checkpoints/stage4_runs_v4.json` in place. The re-run record adds diagnostic fields not present in the committed artifact; in a seed-42 re-run every field present in the committed artifact reproduced with identical values (other seeds were not re-run). See EVIDENCE.md, "Artifact Schema Provenance".
 
 ---
 
@@ -134,6 +128,8 @@ before/
 │   ├── run_analysis.py      # Pipeline runner executing classification & metrics
 │   ├── trace_parser.py      # Independent parser and metrics extraction
 │   ├── generate_report_tables.py # Dynamic report block generator & verifier
+│   ├── synthetic_fixtures.py  # Synthetic fixture generator for parser/pipeline tests
+│   ├── analysis_results.json  # Committed analysis output backing REPORT.md tables
 │   └── tests                # Test suite (mutation, parser, synthetic, anchor)
 ├── tests/                   # Verification test suite
 │   ├── test_foundations.py  # 14 foundation tests (rules, mechanics, guards)
@@ -144,10 +140,14 @@ before/
 │   ├── ANALYSIS.md          # In-depth decision-trace & return analysis
 │   └── images/              # Generated publication figures
 ├── checkpoints/             # Recorded run artifacts and immutable snapshots
+│   ├── stage1.json          # Stages 1-2 baseline checkpoint
+│   ├── stage3_dream.json    # Stage 3 dream-machinery checkpoint
 │   ├── stage4_runs.json     # Initial condition-integrity run
 │   ├── stage4_runs_v2.json  # Restored comparator & coverage run
 │   ├── stage4_runs_v3.json  # Paired-stream RNG baseline run
-│   └── stage4_runs_v4.json  # Complete 80MB passive decision-trace artifact
+│   ├── stage4_runs_v4.json  # Complete 80MB passive decision-trace artifact
+│   ├── snapshot_*/ and loose *.py # Byte-preserved earlier code/report states (provenance)
+│   └── README.md            # Explains the snapshots; not current project code
 ├── analyze_decision_traces.py   # Arithmetic trace analysis script
 ├── return_composition_analysis.py # Return collection decomposition script
 ├── replay.py                # Terminal ASCII trajectory viewer
