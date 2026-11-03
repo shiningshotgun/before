@@ -2,8 +2,13 @@
 import json
 from pathlib import Path
 import pytest
+from exploratory_trace_analysis import pilot_data_present
 from exploratory_trace_analysis.run_analysis import run_full_analysis
 
+@pytest.mark.skipif(
+    not pilot_data_present(),
+    reason="repeated_draws/ raw traces not present (release v1.0-pilot-data)"
+)
 def test_pipeline_integrity():
     res = run_full_analysis()
     

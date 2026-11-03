@@ -2,6 +2,7 @@
 import json
 from pathlib import Path
 import pytest
+from exploratory_trace_analysis import pilot_data_present
 from exploratory_trace_analysis.trace_parser import (
     compute_q_l1,
     extract_actions,
@@ -9,6 +10,11 @@ from exploratory_trace_analysis.trace_parser import (
     extract_collection_schedule,
     extract_return_reward,
     classify_profile
+)
+
+pytestmark = pytest.mark.skipif(
+    not pilot_data_present(),
+    reason="repeated_draws/ raw traces not present (release v1.0-pilot-data)"
 )
 
 def get_valid_seed_traces():

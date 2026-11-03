@@ -25,3 +25,17 @@ jobs:
     - name: Run test suite
       run: |
         pytest -q
+
+    - name: Fetch and verify pilot raw traces (release v1.0-pilot-data)
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        gh release download v1.0-pilot-data --dir repeated_draws
+        cd repeated_draws
+        sha256sum -c repeated_draws_SHA256SUMS.txt
+
+    - name: Run exploratory trace analysis suite (fails on any skip)
+      run: |
+        set -o pipefail
+        pytest exploratory_trace_analysis/ -q -rs | tee eta_results.txt
+        ! grep -Eq '[0-9]+ skipped' eta_results.txt

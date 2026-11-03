@@ -4,3 +4,5 @@ __pycache__/
 .pytest_cache/
 work_done.md
 .DS_Store
+# Raw traces live in release v1.0-pilot-data, not in git
+repeated_draws/
